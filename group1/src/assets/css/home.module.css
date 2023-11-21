@@ -1,0 +1,55 @@
+.feeds{
+    color: white;
+    margin-top: 20px;
+    border-radius: 5px;
+    height: 60px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+
+.feeds:hover{
+    background-color: rgb(147, 147, 147)
+}
+.feeds i{
+    font-size: 30px;
+    color: rgb(166, 200, 255);
+}
+
+.feeds p{
+    font-weight: bold;
+}
+
+.home1{
+    padding-left: 20px;
+}
+
+.newpost{
+    padding: 20px;
+    width: 80%;
+    height: 100px;
+    margin: auto;
+    display: flex;
+    background-color: #242526;
+    margin-top: 20px;
+    border-radius: 10px;
+    align-items: center;
+}
+.avartar{
+    height: 80%;
+    width: 10%;
+}
+.avartar img{
+    height: 80%;
+}
+
+.createbutton{
+    width: 90%;
+    background-color: #3a3b3c;
+    height: 70%;
+    padding: 5px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    color: #afb2b7;
+}
+
