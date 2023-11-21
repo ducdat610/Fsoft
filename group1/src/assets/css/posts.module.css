@@ -1,0 +1,70 @@
+.authors{
+    width: 100%;
+    margin: auto;
+    display: flex;
+    background-color: #242526;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+.posts{
+    padding: 20px;
+    width: 80%;
+    margin: auto;
+    background-color: #242526;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+.authorProfile{
+    color: white;
+    margin-left: 20px;
+}
+
+.authorProfile p{
+    margin: 0;
+}
+.name{
+    font-weight: bold;
+}
+.createdat{
+    font-size: 12px;
+}
+
+.contents{
+    color: white;
+}
+
+.title{
+    font-weight: bold;
+}
+.readmore{
+    cursor: pointer;
+}
+
+
+.followed{
+    border-bottom: 1px solid gray;
+}
+.followed p{
+    color: gray;
+}
+.followed p i{
+    color: red;
+}
+.postbuttons{
+    color: white;
+    display: flex;
+    margin-top: 10px;
+}
+
+.postbuttons div{
+    cursor: pointer;
+    flex: 1;
+    text-align: center;
+    height: 30px;
+    border-radius: 5px;
+}
+
+.postbuttons div:hover{
+    background-color: rgb(147, 147, 147);
+}
