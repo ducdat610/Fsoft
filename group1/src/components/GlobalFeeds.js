@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import styles from '../assets/css/posts.module.css'
+import FeedDetail from './FeedDetail';
 
 function GlobalFeeds() {
     const [feeds, setFeeds] = useState([]);
     const [countfeeds, setCountFeeds] = useState(0);
+    const [selectedFeed, setSelectedFeed] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    
     useEffect(() => {
         getGlobalFeeds();
         getCountGlobalFeeds();
@@ -24,6 +28,19 @@ function GlobalFeeds() {
         return `${date.getMonth()} - ${date.getDate()} - ${date.getFullYear()}`
     }
     console.log(feeds);
+
+    const openModal = async (slug) => {
+        try {
+          const response = await axios.get(`https://api.realworld.io/api/articles/${slug}`);
+          setSelectedFeed(response.data.article);
+          setShowModal(true);
+        } catch (error) {
+          console.error('Error fetching article details:', error);
+        }
+      };
+
+    
+    
     return (
         <>
             {
@@ -41,9 +58,11 @@ function GlobalFeeds() {
                                 </div>
                             </div>
                             <div className={styles.contents}>
+
                                 <p className={styles.title}>{feed.title}</p>
                                 <p className={styles.description}>{feed.description}</p>
-                                <p className={styles.readmore}>Readmore...</p>
+                                <p onClick={() => openModal(feed.slug)} className={styles.readmore}>Readmore...</p>
+                               
                             </div>  
                             <div className={styles.followed}>
                                 <p><i class="fa fa-heart" aria-hidden="true"></i> {feed.favoritesCount}</p>
@@ -54,10 +73,20 @@ function GlobalFeeds() {
                             </div>
                         </div>
                     )
+                    
                 })
+                
             }
-        </>
+            <FeedDetail
+                    selectedFeed={selectedFeed}
+                    showModal={showModal}
+                    setShowModal={setShowModal}
+                />
+            </>
+          
     )
 }
+
+
 
 export default GlobalFeeds
