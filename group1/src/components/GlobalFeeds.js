@@ -138,8 +138,9 @@ function GlobalFeeds() {
                                 <p><i className="fa fa-heart" aria-hidden="true"></i> {feed.favoritesCount}</p>
                             </div>
                             <div className={styles.postbuttons}>
-                                <div><span><i className="fa fa-thumbs-o-up" aria-hidden="true"></i> Like</span></div>
-                                <div><span><i className="fa fa-comment-o" aria-hidden="true"></i> Comment</span></div>
+                                <div><span><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Like</span></div>
+                                <div onClick={() => openModal(feed.slug)}><span><i class="fa fa-comment-o" aria-hidden="true"></i> Comment</span></div>
+
                             </div>
                         </div>
                     )
