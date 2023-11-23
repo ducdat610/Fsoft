@@ -18,10 +18,10 @@ function Header() {
                 <NavLink to='/'>
                     Home
                 </NavLink>
-                <NavLink to='/haha'>
+                <NavLink to='/sign_in'>
                     Sign in
                 </NavLink>
-                <NavLink to='/kaka'>
+                <NavLink to='/sign_up'>
                     Sign up
                 </NavLink>
             </div>
