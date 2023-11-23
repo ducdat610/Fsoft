@@ -40,6 +40,7 @@ const Sign_In = () => {
           nav("/");
         })
         .catch((err) => {
+          console.log(err);
           toast.error("Login Failed due to :" + err.message);
         });
     }
@@ -63,7 +64,7 @@ const Sign_In = () => {
           <div>
             <h2 className="text-center">Sign In</h2>
             <p className="text-center">
-              <Link to="/sign_up" className="text-success">
+              <Link to="/sign_up" className="text-primary">
                 Need an account?
               </Link>
             </p>
@@ -85,7 +86,7 @@ const Sign_In = () => {
                 />
               </FormGroup>
               <FormGroup>
-                <Button type="submit" className="btn btn-success">
+                <Button type="submit" className="btn btn-primary">
                   Sign In
                 </Button>
               </FormGroup>
