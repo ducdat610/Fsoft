@@ -6,3 +6,17 @@ body{
     color:#0866ff !important;
 }
 
+.modal-dialog{
+    /* width: 80% !important; */
+    width: 900px !important;
+    max-width: none !important ;
+}
+.modal-header, .modal-body{
+    background-color: #3a3d3f !important;
+    color: aliceblue    ;
+}
+
+.modal-footer{
+    background-color: #3a3d3f !important;
+    color: aliceblue    ;
+}
