@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import styles from '../assets/css/posts.module.css'
 import FeedDetail from './FeedDetail';
@@ -11,48 +11,55 @@ function Feeds(props) {
     const [offset, setOffSet] = useState(0);
     const [pageBtn, setPageBtn] = useState([]);
     const [change, setChange] = useState(true);
+    const [loading, setLoading] = useState(1);
     useEffect(() => {
         getGlobalFeeds(0);
+        setLoading(2);
     }, [])
 
     useEffect(() => {
-        getGlobalFeeds(1);
-        document.documentElement.scrollTop = 0;
-        let countPage = Math.floor(countfeeds / 10);
-        countfeeds % 10 !== 0 ? countPage++ : countPage = countPage + 0;
-        if (offset === 0) {
+        setLoading(1);
+    }, [offset])
+
+    useEffect(() => {
+        if (loading === 1) {
+            getGlobalFeeds(1);
+            document.documentElement.scrollTop = 0;
+            let countPage = Math.floor(countfeeds / 10);
             countfeeds % 10 !== 0 ? countPage++ : countPage = countPage + 0;
-            if (countPage >= 4) {
-                setPageBtn([1, 2, 3, 4]);
-            } else {
-                const newArr = [];
-                for (let i = 1; i <= countPage; i++) {
-                    newArr.push(i);
+            if (offset === 0) {
+                countfeeds % 10 !== 0 ? countPage++ : countPage = countPage + 0;
+                if (countPage >= 4) {
+                    setPageBtn([1, 2, 3, 4]);
+                } else {
+                    const newArr = [];
+                    for (let i = 1; i <= countPage; i++) {
+                        newArr.push(i);
+                    }
                 }
             }
-        }
-        else if ((offset / 10) + 1 === countPage) {
-            const newArr = [];
-            if (countPage >= 4) {
-                for (let i = countPage - 4; i <= countPage; i++) {
-                    newArr.push(i);
+            else if ((offset / 10) + 1 === countPage) {
+                const newArr = [];
+                if (countPage >= 4) {
+                    for (let i = countPage - 4; i <= countPage; i++) {
+                        newArr.push(i);
+                    }
+                    setPageBtn(newArr);
+                }
+                else {
+                    setPageBtn([1, 2, 3, 4]);
+                }
+            } else {
+                const newArr = [];
+                for (let j = (offset / 10); j <= (offset / 10 + 2); j++) {
+                    newArr.push(j);
                 }
                 setPageBtn(newArr);
             }
-            else {
-                setPageBtn([1, 2, 3, 4]);
-            }
-        } else {
-            const newArr = [];
-            for (let j = (offset / 10); j <= (offset / 10 + 2); j++) {
-                newArr.push(j);
-            }
-            setPageBtn(newArr);
         }
-    }, [offset])
+    }, [loading])
     const getGlobalFeeds = async (status) => {
         const token = localStorage.getItem('token');
-        Startloading();
         let link = props.api + `&offset=${offset}`
         const data = await axios.get(link, {
             headers: {
@@ -61,7 +68,7 @@ function Feeds(props) {
             }
         });
         setFeeds(data.data.articles);
-        EndLoading();
+        setLoading(2);
         if (status === 0) {
             let count = data.data.articlesCount;
             setCountFeeds(count);
@@ -102,25 +109,6 @@ function Feeds(props) {
         }
     }
 
-    const Startloading = () => {
-        document.getElementById('posts_loader__nbKyz').style.display = 'block';
-        const content = document.getElementsByClassName('posts_posts__kqYhu');
-        if (content !== undefined) {
-            for (let i = 0; i < content.length; i++) {
-                content[i].style.display = 'none';
-            }
-        }
-    }
-    const EndLoading = () => {
-        document.getElementById('posts_loader__nbKyz').style.display = 'none';
-        const content = document.getElementsByClassName('posts_posts__kqYhu');
-        if (content !== undefined) {
-            for (let i = 0; i < content.length; i++) {
-                content[i].style.display = 'block';
-            }
-        }
-    }
-
     const handleLike = async (slug, index, favorite) => {
         try {
             const token = localStorage.getItem('token');
@@ -154,59 +142,63 @@ function Feeds(props) {
     }
     return (
         <>
-            <div id={styles.loader}></div>
+            {loading === 1 && <div id={styles.loader}></div>}
 
-            {
-                feeds.length !== 0 && feeds.map((feed, index) => {
-                    return (
-                        <div className={styles.posts} key={index}>
-                            <div className={styles.authors}>
-                                <div className={styles.avartarPost}>
-                                    <img src={feed.author.image
-                                    } alt='error' />
+            {loading === 2 && (
+                <div>
+                    {
+                        feeds.length !== 0 && feeds.map((feed, index) => {
+                            return (
+                                <div className={styles.posts} key={index}>
+                                    <div className={styles.authors}>
+                                        <div className={styles.avartarPost}>
+                                            <img src={feed.author.image
+                                            } alt='error' />
+                                        </div>
+                                        <div className={styles.authorProfile}>
+                                            <p className={styles.name}>{feed.author.username}</p>
+                                            <p className={styles.createdat}>{displayDate(feed.createdAt)}</p>
+                                        </div>
+                                    </div>
+                                    {
+                                        feed.tagList.length !== 0 && (
+                                            <p>
+                                                {
+                                                    feed.tagList.map((tag, index) => {
+                                                        return (
+                                                            <span style={{ marginRight: "7px" }} key={index}><Link>#{tag}</Link></span>
+                                                        )
+                                                    })
+                                                }
+                                            </p>
+                                        )
+                                    }
+                                    <div className={styles.contents}>
+
+                                        <p className={styles.title}>{feed.title}</p>
+                                        <p className={styles.description}>{feed.description}</p>
+                                        <p onClick={() => openModal(feed.slug)} className={styles.readmore}>Readmore...</p>
+
+                                    </div>
+                                    <div className={styles.followed}>
+                                        <p><i className="fa fa-heart" aria-hidden="true"></i> {feed.favoritesCount}</p>
+                                    </div>
+                                    <div className={styles.postbuttons}>
+                                        <div className={`${feed.favorited === true ? styles.liked : ""}`}
+                                            onClick={() => handleLike(feed.slug, index, feed.favorited)}>
+                                            <span><i className="fa fa-thumbs-up" aria-hidden="true"></i> Like</span>
+                                        </div>
+                                        <div onClick={() => openModal(feed.slug)}><span><i className="fa fa-comment-o" aria-hidden="true"></i> Comment</span></div>
+
+                                    </div>
                                 </div>
-                                <div className={styles.authorProfile}>
-                                    <p className={styles.name}>{feed.author.username}</p>
-                                    <p className={styles.createdat}>{displayDate(feed.createdAt)}</p>
-                                </div>
-                            </div>
-                            {
-                                feed.tagList.length !== 0 && (
-                                    <p>
-                                        {
-                                            feed.tagList.map((tag, index) => {
-                                                return (
-                                                    <span style={{ marginRight: "7px" }} key={index}><Link>#{tag}</Link></span>
-                                                )
-                                            })
-                                        }
-                                    </p>
-                                )
-                            }
-                            <div className={styles.contents}>
+                            )
 
-                                <p className={styles.title}>{feed.title}</p>
-                                <p className={styles.description}>{feed.description}</p>
-                                <p onClick={() => openModal(feed.slug)} className={styles.readmore}>Readmore...</p>
+                        })
 
-                            </div>
-                            <div className={styles.followed}>
-                                <p><i className="fa fa-heart" aria-hidden="true"></i> {feed.favoritesCount}</p>
-                            </div>
-                            <div className={styles.postbuttons}>
-                                <div className={`${feed.favorited === true ? styles.liked : ""}`}
-                                    onClick={() => handleLike(feed.slug, index, feed.favorited)}>
-                                    <span><i className="fa fa-thumbs-up" aria-hidden="true"></i> Like</span>
-                                </div>
-                                <div onClick={() => openModal(feed.slug)}><span><i className="fa fa-comment-o" aria-hidden="true"></i> Comment</span></div>
-
-                            </div>
-                        </div>
-                    )
-
-                })
-
-            }
+                    }
+                </div>
+            )}
             <div className={styles.pagging}>
                 {offset !== 0 && (
                     <div className={styles.pagebtn} onClick={() => handleSetPagging(offset / 10)}>
