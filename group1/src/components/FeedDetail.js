@@ -72,7 +72,7 @@ function FeedDetail({ selectedFeed, showModal, setShowModal }) {
                     </div>
 
                     <div className={styles.followed}>
-                                <p><i class="fa fa-heart" aria-hidden="true"></i> {selectedFeed.favoritesCount}</p>
+                                <p><i className="fa fa-heart" aria-hidden="true"></i> {selectedFeed.favoritesCount}</p>
                             </div>
                             </div>
 
@@ -80,11 +80,11 @@ function FeedDetail({ selectedFeed, showModal, setShowModal }) {
                         <div className='container' style={{marginTop:'20px'}}>
                         <div className='col-12' >
                             <Button className='col-6' variant="outline-secondary" onClick={() => setShowModal(false)}>
-                            <span><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Like</span>
+                            <span><i className="fa fa-thumbs-o-up" aria-hidden="true"></i> Like</span>
                             </Button>
                             
                             <Button className='col-6' variant="outline-secondary" onClick={handleComment}>
-                            <span><i class="fa fa-comment-o" aria-hidden="true"></i> Comment</span>
+                            <span><i className="fa fa-comment-o" aria-hidden="true"></i> Comment</span>
                             </Button>
                             <textarea
                     value={comment}

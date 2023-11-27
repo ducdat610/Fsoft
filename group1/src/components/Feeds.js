@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import styles from '../assets/css/posts.module.css'
 import FeedDetail from './FeedDetail';
@@ -27,8 +27,9 @@ function Feeds(props) {
             document.documentElement.scrollTop = 0;
             let countPage = Math.floor(countfeeds / 10);
             countfeeds % 10 !== 0 ? countPage++ : countPage = countPage + 0;
+            console.log('count: ' + countPage);
+            console.log(offset);
             if (offset === 0) {
-                countfeeds % 10 !== 0 ? countPage++ : countPage = countPage + 0;
                 if (countPage >= 4) {
                     setPageBtn([1, 2, 3, 4]);
                 } else {
@@ -36,6 +37,8 @@ function Feeds(props) {
                     for (let i = 1; i <= countPage; i++) {
                         newArr.push(i);
                     }
+                    console.log(newArr);
+                    setPageBtn(newArr)
                 }
             }
             else if ((offset / 10) + 1 === countPage) {
@@ -47,7 +50,11 @@ function Feeds(props) {
                     setPageBtn(newArr);
                 }
                 else {
-                    setPageBtn([1, 2, 3, 4]);
+                    const newArr = [];
+                    for (let i = 1; i <= countPage; i++) {
+                        newArr.push(i);
+                    }
+                    setPageBtn(newArr)
                 }
             } else {
                 const newArr = [];
@@ -74,6 +81,7 @@ function Feeds(props) {
             setCountFeeds(count);
             let countPage = Math.floor(count / 10);
             count % 10 !== 0 ? countPage++ : countPage = countPage + 0;
+            console.log(count);
             if (countPage >= 4) {
                 setPageBtn([1, 2, 3, 4]);
             } else {
@@ -81,9 +89,7 @@ function Feeds(props) {
                 for (let i = 1; i <= countPage; i++) {
                     newArr.push(i);
                 }
-                if (count % 10 !== 0) {
-                    newArr.push(newArr.length + 1);
-                }
+                setPageBtn(newArr);
             }
         }
     }

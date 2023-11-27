@@ -34,11 +34,11 @@ function TagDetail() {
             </div>
             <div className='container'>
                 <div className='row'>
-                    <div className='col-3'></div>
-                    <div className='col-6'>
+                    <div className='col-2'></div>
+                    <div className='col-8'>
                     <Feeds api={`${api}/articles?tag=${tag}`}></Feeds>
                     </div>
-                    <div className='col-3'></div>
+                    <div className='col-2'></div>
                 </div>
             </div>
             
