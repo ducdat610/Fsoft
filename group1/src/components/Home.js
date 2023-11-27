@@ -1,6 +1,6 @@
 import styles from '../assets/css/home.module.css'
 import logo from '../assets/images/logo.png'
-import GlobalFeeds from './GlobalFeeds'
+import Feeds from './Feeds'
 
 function Home() {
     return (
@@ -20,7 +20,7 @@ function Home() {
                             <i className="fa fa-user-circle" aria-hidden="true"></i>
                         </div>
                         <div className='col-10'>
-                            <p>Followers Feed</p>
+                            <p>Your Feeds</p>
                         </div>
                     </div>
                 </div>
@@ -33,7 +33,7 @@ function Home() {
                             <span>Khai oi ban nghi gi the</span>
                         </div>
                     </div>
-                    <GlobalFeeds></GlobalFeeds>
+                    <Feeds></Feeds>
                 </div>
                 <div className={`col-3 ${styles.home3}`}>
                     

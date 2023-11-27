@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import styles from '../assets/css/posts.module.css'
 import FeedDetail from './FeedDetail';
-import {Link} from 'react-router-dom'
-function GlobalFeeds() {
+import { Link } from 'react-router-dom'
+function Feeds() {
     const [feeds, setFeeds] = useState([]);
     const [countfeeds, setCountFeeds] = useState(0);
     const [selectedFeed, setSelectedFeed] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [offset, setOffSet] = useState(0);
-    const [pageBtn, setPageBtn] = useState([])
+    const [pageBtn, setPageBtn] = useState([]);
+    const [change, setChange] = useState(true);
     useEffect(() => {
         getGlobalFeeds(0);
     }, [])
@@ -50,14 +51,21 @@ function GlobalFeeds() {
         }
     }, [offset])
     const getGlobalFeeds = async (status) => {
-        const data = await axios.get(`https://api.realworld.io/api/articles?offset=${offset}&limit=10`);
+        const token = localStorage.getItem('token');
+        Startloading();
+        const data = await axios.get(`https://api.realworld.io/api/articles?offset=${offset}&limit=10`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
         setFeeds(data.data.articles);
+        EndLoading();
         if (status === 0) {
             let count = data.data.articlesCount;
             setCountFeeds(count);
             let countPage = Math.floor(count / 10);
             count % 10 !== 0 ? countPage++ : countPage = countPage + 0;
-            console.log(countPage);
             if (countPage >= 4) {
                 setPageBtn([1, 2, 3, 4]);
             } else {
@@ -71,16 +79,11 @@ function GlobalFeeds() {
             }
         }
     }
-    // const getCountGlobalFeeds = async () => {
-    //     const data = await axios.get(`https://api.realworld.io/api/articles?offset=10&limit=20`);
-    //     setCountFeeds(data.data.articles.articlesCount);
-    // }
 
     const displayDate = (time) => {
         const date = new Date(time);
         return `${date.getMonth()} - ${date.getDate()} - ${date.getFullYear()}`
     }
-    console.log(pageBtn);
 
     const openModal = async (slug) => {
         try {
@@ -98,8 +101,60 @@ function GlobalFeeds() {
         }
     }
 
+    const Startloading = () => {
+        document.getElementById('posts_loader__nbKyz').style.display = 'block';
+        const content = document.getElementsByClassName('posts_posts__kqYhu');
+        if (content !== undefined) {
+            for (let i = 0; i < content.length; i++) {
+                content[i].style.display = 'none';
+            }
+        }
+    }
+    const EndLoading = () => {
+        document.getElementById('posts_loader__nbKyz').style.display = 'none';
+        const content = document.getElementsByClassName('posts_posts__kqYhu');
+        if (content !== undefined) {
+            for (let i = 0; i < content.length; i++) {
+                content[i].style.display = 'block';
+            }
+        }
+    }
+
+    const handleLike = async (slug, index, favorite) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (favorite) {
+                const response = await axios.delete(`https://api.realworld.io/api/articles/${slug}/favorite`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
+                }
+                );
+                feeds[index].favorited = response.data.article.favorited;
+                feeds[index].favoritesCount = response.data.article.favoritesCount;
+                setChange(!change);
+            }
+            else {
+                const response = await axios.post(`https://api.realworld.io/api/articles/${slug}/favorite`, {}, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+                feeds[index].favorited = response.data.article.favorited;
+                feeds[index].favoritesCount = response.data.article.favoritesCount;
+                setChange(!change);
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
     return (
         <>
+            <div id={styles.loader}></div>
+
             {
                 feeds.length !== 0 && feeds.map((feed, index) => {
                     return (
@@ -118,9 +173,9 @@ function GlobalFeeds() {
                                 feed.tagList.length !== 0 && (
                                     <p>
                                         {
-                                            feed.tagList.map((tag) => {
+                                            feed.tagList.map((tag, index) => {
                                                 return (
-                                                    <span style={{marginRight:"7px"}}><Link>#{tag}</Link></span>
+                                                    <span style={{ marginRight: "7px" }} key={index}><Link>#{tag}</Link></span>
                                                 )
                                             })
                                         }
@@ -138,8 +193,11 @@ function GlobalFeeds() {
                                 <p><i className="fa fa-heart" aria-hidden="true"></i> {feed.favoritesCount}</p>
                             </div>
                             <div className={styles.postbuttons}>
-                                <div><span><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Like</span></div>
-                                <div onClick={() => openModal(feed.slug)}><span><i class="fa fa-comment-o" aria-hidden="true"></i> Comment</span></div>
+                                <div className={`${feed.favorited === true ? styles.liked : ""}`}
+                                    onClick={() => handleLike(feed.slug, index, feed.favorited)}>
+                                    <span><i className="fa fa-thumbs-up" aria-hidden="true"></i> Like</span>
+                                </div>
+                                <div onClick={() => openModal(feed.slug)}><span><i className="fa fa-comment-o" aria-hidden="true"></i> Comment</span></div>
 
                             </div>
                         </div>
@@ -157,7 +215,8 @@ function GlobalFeeds() {
                 {
                     pageBtn.length !== 0 && pageBtn.map((btn) => {
                         return (
-                            <div className={`${offset / 10 + 1 === btn ? styles.pageChoosed : styles.pagebtn}`} key={btn} onClick={() => handleSetPagging(btn)}>
+                            <div className={`${offset / 10 + 1 === btn ? styles.pageChoosed : styles.pagebtn}`}
+                                key={btn} onClick={() => handleSetPagging(btn)}>
                                 <span>{btn}</span>
                             </div>
                         )
@@ -183,4 +242,4 @@ function GlobalFeeds() {
 
 
 
-export default GlobalFeeds
+export default Feeds
