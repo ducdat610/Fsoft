@@ -1,7 +1,8 @@
 import styles from '../assets/css/home.module.css'
 import logo from '../assets/images/logo.png'
 import Feeds from './Feeds'
-
+import Tags from './Tags'
+// import Tags from '.Tags'
 function Home() {
     return (
         <div className='container-fluid'>
@@ -36,7 +37,7 @@ function Home() {
                     <Feeds api='https://api.realworld.io/api/articles?limit=10'></Feeds>
                 </div>
                 <div className={`col-3 ${styles.home3}`}>
-                    
+                    <Tags></Tags>
                 </div>
             </div>
         </div>

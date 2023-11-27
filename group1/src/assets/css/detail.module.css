@@ -1,0 +1,124 @@
+.tagIdea {
+    height: 140px;
+    background-color: #1c1c1d;
+    color: white;
+    padding-left: 10vw;
+    padding-top: 20px;
+   
+}
+.authors {
+    width: 100%;
+    margin: auto;
+    display: flex;
+    background-color: #242526;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+.posts {
+    padding: 20px;
+    width: 60%;
+    margin: auto;
+    background-color: #242526;
+    margin-top: 20px;
+    border-radius: 10px;
+    /* padding-left: 15vw; */
+    margin-left: 20vw;
+}
+
+.authorProfile {
+    color: white;
+    margin-left: 20px;
+}
+
+.authorProfile p {
+    margin: 0;
+}
+
+.name {
+    font-weight: bold;
+}
+
+.createdat {
+    font-size: 12px;
+}
+
+.contents {
+    color: white;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.readmore {
+    cursor: pointer;
+}
+
+
+.followed {
+    border-bottom: 1px solid gray;
+}
+
+.followed p {
+    color: gray;
+}
+
+.followed p i {
+    color: red;
+}
+
+.postbuttons {
+    color: white;
+    display: flex;
+    margin-top: 10px;
+}
+
+.postbuttons div {
+    cursor: pointer;
+    flex: 1;
+    text-align: center;
+    height: 30px;
+    border-radius: 5px;
+}
+
+.postbuttons div:hover {
+    background-color: rgb(147, 147, 147);
+}
+
+.pagging {
+    display: flex;
+    margin-top: 20px;
+    padding-left: 73px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.pagebtn {
+    background-color: #242526;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pagebtn:hover {
+    background-color: #3e3f41;
+}
+
+.pageChoosed {
+    background-color: rgb(166, 200, 255);
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
