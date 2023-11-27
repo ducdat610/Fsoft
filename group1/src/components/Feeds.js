@@ -3,7 +3,7 @@ import axios from 'axios'
 import styles from '../assets/css/posts.module.css'
 import FeedDetail from './FeedDetail';
 import { Link } from 'react-router-dom'
-function Feeds() {
+function Feeds(props) {
     const [feeds, setFeeds] = useState([]);
     const [countfeeds, setCountFeeds] = useState(0);
     const [selectedFeed, setSelectedFeed] = useState(null);
@@ -53,7 +53,8 @@ function Feeds() {
     const getGlobalFeeds = async (status) => {
         const token = localStorage.getItem('token');
         Startloading();
-        const data = await axios.get(`https://api.realworld.io/api/articles?offset=${offset}&limit=10`, {
+        let link = props.api + `&offset=${offset}`
+        const data = await axios.get(link, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`

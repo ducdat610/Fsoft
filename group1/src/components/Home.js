@@ -33,7 +33,7 @@ function Home() {
                             <span>Khai oi ban nghi gi the</span>
                         </div>
                     </div>
-                    <Feeds></Feeds>
+                    <Feeds api='https://api.realworld.io/api/articles?limit=10'></Feeds>
                 </div>
                 <div className={`col-3 ${styles.home3}`}>
                     
