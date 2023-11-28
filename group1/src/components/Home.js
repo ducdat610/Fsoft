@@ -1,9 +1,12 @@
+import { useEffect } from 'react'
 import styles from '../assets/css/home.module.css'
 import logo from '../assets/images/logo.png'
 import Feeds from './Feeds'
 import Tags from './Tags'
+import { useSelector } from 'react-redux'
 // import Tags from '.Tags'
 function Home() {
+    const loginState = useSelector(state => state.login.value)
     return (
         <div className='container-fluid'>
             <div className='row'>
@@ -16,14 +19,19 @@ function Home() {
                             <p>Global Feed</p>
                         </div>
                     </div>
-                    <div className={`${styles.feeds} row`}>
-                        <div className='col-2'>
-                            <i className="fa fa-user-circle" aria-hidden="true"></i>
-                        </div>
-                        <div className='col-10'>
-                            <p>Your Feeds</p>
-                        </div>
-                    </div>
+                    {
+                        loginState === true && (
+                            <div className={`${styles.feeds} row`}>
+                                <div className='col-2'>
+                                    <i className="fa fa-user-circle" aria-hidden="true"></i>
+                                </div>
+                                <div className='col-10'>
+                                    <p>Your Feeds</p>
+                                </div>
+                            </div>
+                        )
+                    }
+
                 </div>
                 <div className={`col-6 ${styles.home2}`}>
                     <div className={`${styles.newpost}`}>

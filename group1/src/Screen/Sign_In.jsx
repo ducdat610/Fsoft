@@ -12,7 +12,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { useSelector, useDispatch } from 'react-redux'
+import { login, logout } from '../features/login/loginSlice'
 const Sign_In = () => {
+  const loginState = useSelector(state => state.login.value)
+  const dispatch = useDispatch()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const nav = useNavigate();
@@ -37,6 +41,7 @@ const Sign_In = () => {
           localStorage.setItem("user", JSON.stringify(user));
           localStorage.setItem("token", user.token);
           toast.success("Success");
+          dispatch(login())
           nav("/");
         })
         .catch((err) => {
