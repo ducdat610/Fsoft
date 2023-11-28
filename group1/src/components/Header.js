@@ -15,6 +15,7 @@ function Header() {
         if (user) {
             let userObj = JSON.parse(user);
             setUser(userObj);
+            dispatch(login());
         }
     }, [])
     useEffect(() => {
