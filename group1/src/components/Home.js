@@ -1,17 +1,24 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import styles from '../assets/css/home.module.css'
 import logo from '../assets/images/logo.png'
 import Feeds from './Feeds'
 import Tags from './Tags'
 import { useSelector } from 'react-redux'
+import NewPost from './NewPost'
 // import Tags from '.Tags'
 function Home() {
-    const loginState = useSelector(state => state.login.value)
+    const loginState = useSelector(state => state.login.value);
+    const [api, setApi] = useState('https://api.realworld.io/api/articles?limit=10');
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+    console.log(api);
     return (
         <div className='container-fluid'>
             <div className='row'>
                 <div className={`col-3 ${styles.home1}`}>
-                    <div className={`${styles.feeds} row`}>
+                    <div className={`${styles.feeds} row`}
+                        onClick={() => setApi('https://api.realworld.io/api/articles?limit=10')}>
                         <div className='col-2'>
                             <i className="fa fa-globe" aria-hidden="true"></i>
                         </div>
@@ -21,7 +28,8 @@ function Home() {
                     </div>
                     {
                         loginState === true && (
-                            <div className={`${styles.feeds} row`}>
+                            <div className={`${styles.feeds} row`}
+                                onClick={() => setApi('https://api.realworld.io/api/articles/feed?limit=10')}>
                                 <div className='col-2'>
                                     <i className="fa fa-user-circle" aria-hidden="true"></i>
                                 </div>
@@ -38,16 +46,17 @@ function Home() {
                         <div className={styles.avartar}>
                             <img src={logo} alt='error' />
                         </div>
-                        <div className={styles.createbutton}>
+                        <div className={styles.createbutton} onClick={handleShow}>
                             <span>Khai oi ban nghi gi the</span>
                         </div>
                     </div>
-                    <Feeds api='https://api.realworld.io/api/articles?limit=10'></Feeds>
+                    <Feeds api={api}></Feeds>
                 </div>
                 <div className={`col-3 ${styles.home3}`}>
                     <Tags></Tags>
                 </div>
             </div>
+            <NewPost show={show} handleClose={handleClose} handleShow={handleShow}></NewPost>
         </div>
     )
 }
