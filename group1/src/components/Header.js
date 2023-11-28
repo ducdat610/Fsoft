@@ -5,15 +5,13 @@ import { NavLink } from 'react-router-dom'
 function Header() {
     return (
         <header className={styles.header}>
-        <NavLink to={`/`}>
-            <div  className={styles.header1}>
-                <img src={logo} alt='error' />
-                <h2>Fabook</h2>
-            </div>
+            <NavLink to={`/`}>
+                <div className={styles.header1}>
+                    <img src={logo} alt='error' />
+                    <h2>Fabook</h2>
+                </div>
 
-        </NavLink>
-            
-
+            </NavLink>
             <div className={styles.header2}>
                 <NavLink to='/'>
                     Home
