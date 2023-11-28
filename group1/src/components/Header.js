@@ -14,11 +14,17 @@ function Header() {
         const user = localStorage.getItem('user');
         if (user) {
             let userObj = JSON.parse(user);
-            console.log(userObj);
             setUser(userObj);
-            dispatch(login())
         }
     }, [])
+    useEffect(() => {
+        const user = localStorage.getItem('user');
+        if (user) {
+            let userObj = JSON.parse(user);
+            console.log(userObj);
+            setUser(userObj);
+        }
+    }, [loginState])
     const handleLogOut = () => {
         localStorage.clear();
         dispatch(logout())
