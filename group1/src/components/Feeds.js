@@ -16,7 +16,7 @@ function Feeds(props) {
     const [change, setChange] = useState(true);
     const [loading, setLoading] = useState(1);
     useEffect(() => {
-        getGlobalFeeds(0);
+        getGlobalFeeds();
         setLoading(2);
     }, [])
 
@@ -24,12 +24,10 @@ function Feeds(props) {
         if (offset !== 0) {
             setOffSet(0);
         }
-        else {
-            setLoading(1);
-            getGlobalFeeds(0)
+        else{
+            getGlobalFeeds();
         }
-
-    }, [loginState])
+    }, [loginState, props.api])
 
     useEffect(() => {
         setLoading(1);
@@ -37,46 +35,11 @@ function Feeds(props) {
 
     useEffect(() => {
         if (loading === 1) {
-            getGlobalFeeds(1);
+            getGlobalFeeds();
             document.documentElement.scrollTop = 0;
-            let countPage = Math.floor(countfeeds / 10);
-            countfeeds % 10 !== 0 ? countPage++ : countPage = countPage + 0;
-            if (offset === 0) {
-                if (countPage >= 4) {
-                    setPageBtn([1, 2, 3, 4]);
-                } else {
-                    const newArr = [];
-                    for (let i = 1; i <= countPage; i++) {
-                        newArr.push(i);
-                    }
-                    setPageBtn(newArr)
-                }
-            }
-            else if ((offset / 10) + 1 === countPage) {
-                const newArr = [];
-                if (countPage >= 4) {
-                    for (let i = countPage - 4; i <= countPage; i++) {
-                        newArr.push(i);
-                    }
-                    setPageBtn(newArr);
-                }
-                else {
-                    const newArr = [];
-                    for (let i = 1; i <= countPage; i++) {
-                        newArr.push(i);
-                    }
-                    setPageBtn(newArr)
-                }
-            } else {
-                const newArr = [];
-                for (let j = (offset / 10); j <= (offset / 10 + 2); j++) {
-                    newArr.push(j);
-                }
-                setPageBtn(newArr);
-            }
         }
     }, [loading])
-    const getGlobalFeeds = async (status) => {
+    const getGlobalFeeds = async () => {
         const token = localStorage.getItem('token');
         let link = props.api + `&offset=${offset}`
         let data;
@@ -93,11 +56,12 @@ function Feeds(props) {
         }
         setFeeds(data.data.articles);
         setLoading(2);
-        if (status === 0) {
-            let count = data.data.articlesCount;
-            setCountFeeds(count);
-            let countPage = Math.floor(count / 10);
-            count % 10 !== 0 ? countPage++ : countPage = countPage + 0;
+        let count = data.data.articlesCount;
+        setCountFeeds(count);
+        let countPage = Math.floor(count / 10);
+        countfeeds % 10 !== 0 ? countPage++ : countPage = countPage + 0;
+        if (offset === 0) {
+            console.log('enter thia');
             if (countPage >= 4) {
                 setPageBtn([1, 2, 3, 4]);
             } else {
@@ -105,8 +69,30 @@ function Feeds(props) {
                 for (let i = 1; i <= countPage; i++) {
                     newArr.push(i);
                 }
+                setPageBtn(newArr)
+            }
+        }
+        else if ((offset / 10) + 1 === countPage) {
+            const newArr = [];
+            if (countPage >= 4) {
+                for (let i = countPage - 4; i <= countPage; i++) {
+                    newArr.push(i);
+                }
                 setPageBtn(newArr);
             }
+            else {
+                const newArr = [];
+                for (let i = 1; i <= countPage; i++) {
+                    newArr.push(i);
+                }
+                setPageBtn(newArr)
+            }
+        } else {
+            const newArr = [];
+            for (let j = (offset / 10); j <= (offset / 10 + 2); j++) {
+                newArr.push(j);
+            }
+            setPageBtn(newArr);
         }
     }
 
@@ -130,7 +116,7 @@ function Feeds(props) {
             setOffSet((index - 1) * 10);
         }
     }
-
+    console.log(feeds);
     const handleLike = async (slug, index, favorite) => {
         try {
             const token = localStorage.getItem('token');
@@ -162,6 +148,7 @@ function Feeds(props) {
             console.log(error);
         }
     }
+    console.log(countfeeds);
     return (
         <>
             {loading === 1 && <div id={styles.loader}></div>}
