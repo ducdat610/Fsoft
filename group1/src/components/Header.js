@@ -1,8 +1,29 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from '../assets/css/header.module.css'
 import logo from '../assets/images/logo.png'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { login, logout } from '../features/login/loginSlice'
+
 function Header() {
+    const loginState = useSelector(state => state.login.value)
+    const dispatch = useDispatch()
+    // const [isLogin, setIsLogin] = useState(false);
+    const [user, setUser] = useState();
+    useEffect(() => {
+        const user = localStorage.getItem('user');
+        if (user) {
+            let userObj = JSON.parse(user);
+            console.log(userObj);
+            setUser(userObj);
+            dispatch(login())
+        }
+    }, [])
+    const handleLogOut = () => {
+        localStorage.clear();
+        dispatch(logout())
+    }
+    console.log(user);
     return (
         <header className={styles.header}>
             <NavLink to={`/`}>
@@ -10,19 +31,34 @@ function Header() {
                     <img src={logo} alt='error' />
                     <h2>Fabook</h2>
                 </div>
-
             </NavLink>
-            <div className={styles.header2}>
-                <NavLink to='/'>
-                    Home
-                </NavLink>
-                <NavLink to='/sign_in'>
-                    Sign in
-                </NavLink>
-                <NavLink to='/sign_up'>
-                    Sign up
-                </NavLink>
-            </div>
+            {
+                loginState === false ? (
+                    <div className={styles.header2}>
+                        <NavLink to='/'>
+                            Home
+                        </NavLink>
+                        <NavLink to='/sign_in'>
+                            Sign in
+                        </NavLink>
+                        <NavLink to='/sign_up'>
+                            Sign up
+                        </NavLink>
+                    </div>
+                ) : (
+                    <div className={`${styles.header2} ${styles.logged}`}>
+                        <img src={user!==undefined?user.image:""} alt='error' />
+                        <p>{user!==undefined?user.username:""}</p>
+                        <div className={styles.linkbox}>
+                            <ul>
+                                <li> <Link>My Profile</Link> </li>
+                                <li onClick={handleLogOut}>Log out</li>
+                            </ul>
+                        </div>
+                    </div>
+                )
+            }
+
         </header>
     )
 }

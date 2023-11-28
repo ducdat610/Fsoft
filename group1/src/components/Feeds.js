@@ -3,7 +3,10 @@ import axios from 'axios'
 import styles from '../assets/css/posts.module.css'
 import FeedDetail from './FeedDetail';
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+
 function Feeds(props) {
+    const loginState = useSelector(state => state.login.value);
     const [feeds, setFeeds] = useState([]);
     const [countfeeds, setCountFeeds] = useState(0);
     const [selectedFeed, setSelectedFeed] = useState(null);
@@ -18,6 +21,17 @@ function Feeds(props) {
     }, [])
 
     useEffect(() => {
+        if (offset !== 0) {
+            setOffSet(0);
+        }
+        else {
+            setLoading(1);
+            getGlobalFeeds(0)
+        }
+
+    }, [loginState])
+
+    useEffect(() => {
         setLoading(1);
     }, [offset])
 
@@ -27,8 +41,6 @@ function Feeds(props) {
             document.documentElement.scrollTop = 0;
             let countPage = Math.floor(countfeeds / 10);
             countfeeds % 10 !== 0 ? countPage++ : countPage = countPage + 0;
-            console.log('count: ' + countPage);
-            console.log(offset);
             if (offset === 0) {
                 if (countPage >= 4) {
                     setPageBtn([1, 2, 3, 4]);
@@ -37,7 +49,6 @@ function Feeds(props) {
                     for (let i = 1; i <= countPage; i++) {
                         newArr.push(i);
                     }
-                    console.log(newArr);
                     setPageBtn(newArr)
                 }
             }
@@ -68,12 +79,18 @@ function Feeds(props) {
     const getGlobalFeeds = async (status) => {
         const token = localStorage.getItem('token');
         let link = props.api + `&offset=${offset}`
-        const data = await axios.get(link, {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            }
-        });
+        let data;
+        if (token) {
+            data = await axios.get(link, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+        }
+        else {
+            data = await axios.get(link);
+        }
         setFeeds(data.data.articles);
         setLoading(2);
         if (status === 0) {
@@ -81,7 +98,6 @@ function Feeds(props) {
             setCountFeeds(count);
             let countPage = Math.floor(count / 10);
             count % 10 !== 0 ? countPage++ : countPage = countPage + 0;
-            console.log(count);
             if (countPage >= 4) {
                 setPageBtn([1, 2, 3, 4]);
             } else {
