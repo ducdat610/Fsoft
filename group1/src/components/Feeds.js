@@ -53,6 +53,7 @@ function Feeds(props) {
             });
         }
         else {
+            console.log('check logout');
             data = await axios.get(link);
         }
         setFeeds(data.data.articles);
@@ -62,9 +63,6 @@ function Feeds(props) {
         let countPage = Math.floor(count / 10);
         count % 10 !== 0 ? countPage++ : countPage = countPage + 0;
         if (offset === 0) {
-            // console.log('enter thia');
-            if (countPage >= 4) {
-                setPageBtn([1, 2, 3, 4]);
             } else {
                 const newArr = [];
                 for (let i = 1; i <= countPage; i++) {
@@ -148,8 +146,7 @@ function Feeds(props) {
         } catch (error) {
             console.log(error);
         }
-    }
-    // console.log(countfeeds);
+
     return (
         <>
             {loading === 1 && <div id={styles.loader}></div>}
