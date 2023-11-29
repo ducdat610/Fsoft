@@ -63,8 +63,6 @@ function Feeds(props) {
         let countPage = Math.floor(count / 10);
         count % 10 !== 0 ? countPage++ : countPage = countPage + 0;
         if (offset === 0) {
-            if (countPage >= 4) {
-                setPageBtn([1, 2, 3, 4]);
             } else {
                 const newArr = [];
                 for (let i = 1; i <= countPage; i++) {
@@ -117,7 +115,7 @@ function Feeds(props) {
             setOffSet((index - 1) * 10);
         }
     }
-    console.log(feeds);
+    // console.log(feeds);
     const handleLike = async (slug, index, favorite) => {
         try {
             const token = localStorage.getItem('token');
@@ -148,8 +146,7 @@ function Feeds(props) {
         } catch (error) {
             console.log(error);
         }
-    }
-    console.log(props.api);
+
     return (
         <>
             {loading === 1 && <div id={styles.loader}></div>}

@@ -122,3 +122,62 @@
     cursor: pointer;
 }
 
+.feeds{
+    color: white;
+    /* margin-top: 20px; */
+    border-radius: 5px;
+    height: 60px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+
+.feeds:hover{
+    background-color: rgb(147, 147, 147)
+}
+.feeds i{
+    font-size: 30px;
+    color: rgb(166, 200, 255);
+}
+
+.feeds p{
+    font-weight: bold;
+}
+
+.home1{
+    padding-left: 20px;
+    margin-top: 0px;
+}
+.home3 {
+    padding: 0px;
+}
+.home2 {
+    padding: 0px;
+}
+.tagIdea2 {
+    height: 120px;
+    background-color: #222222;
+    color: white;
+    padding-left: 5vw;
+    padding-top: 20px;
+}
+.viewtag {
+    height: 120px;
+    background: rgb(61, 60, 60);
+    /* margin-top: 10px; */
+    padding-top: 5px;
+    border-radius: 10px;
+}
+.avatar {
+    border-radius: 50%;
+    margin-top: 10px;
+    height: 70px;
+}
+.viewtag {
+    text-align: center;
+}
+.viewtag h3 {
+    color: white;
+    margin-top: 10px;
+    font-size: 16px;
+}

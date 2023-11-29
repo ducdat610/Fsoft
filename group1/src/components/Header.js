@@ -56,11 +56,15 @@ function Header() {
                     </div>
                 ) : (
                     <div className={`${styles.header2} ${styles.logged}`}>
-                        <img src={user!==undefined?user.image:""} alt='error' />
-                        <p>{user!==undefined?user.username:""}</p>
+                        <img src={user !== undefined ? user.image : ""} alt='error' />
+                        <p>{user !== undefined ? user.username : ""}</p>
                         <div className={styles.linkbox}>
                             <ul>
-                                <li> <Link>My Profile</Link> </li>
+                                <li>
+                                    <Link to="/my_articles" className="text-primary">
+                                        My Profile
+                                    </Link>
+                                </li>
                                 <li onClick={handleLogOut}>Log out</li>
                             </ul>
                         </div>
