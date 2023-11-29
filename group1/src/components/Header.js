@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import styles from '../assets/css/header.module.css'
 import logo from '../assets/images/logo.png'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { login, logout } from '../features/login/loginSlice'
 
 function Header() {
     const loginState = useSelector(state => state.login.value)
-    const dispatch = useDispatch();
-    const nav = useNavigate();
+    const dispatch = useDispatch()
     // const [isLogin, setIsLogin] = useState(false);
     const [user, setUser] = useState();
     useEffect(() => {
@@ -30,7 +29,6 @@ function Header() {
     const handleLogOut = () => {
         localStorage.clear();
         dispatch(logout())
-        nav('/');
     }
     console.log(user);
     return (
@@ -65,7 +63,7 @@ function Header() {
                                         My Profile
                                     </Link>
                                 </li>
-                                <li onClick={handleLogOut}><Link to={"/#"}> Log out</Link></li>
+                                <li onClick={handleLogOut}>Log out</li>
                             </ul>
                         </div>
                     </div>
