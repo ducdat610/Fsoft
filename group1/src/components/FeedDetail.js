@@ -3,12 +3,22 @@ import Button from 'react-bootstrap/Button';
 import React, { useState, useEffect } from 'react'
 import styles from '../assets/css/posts.module.css'
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 
 function FeedDetail({ selectedFeed, showModal, setShowModal }) {
 
      const [comments, setComments] = useState('');
     const [commentContent, setCommentContent] = useState('');
+    const [loading, setLoading] = useState(1);
+
+    
+    useEffect(() => {
+        if (loading === 1) {
+            getComments();
+            document.documentElement.scrollTop = 0;
+        }
+    }, [loading])
 
     const displayDate = (time) => {
         const date = new Date(time);
@@ -17,19 +27,49 @@ function FeedDetail({ selectedFeed, showModal, setShowModal }) {
 
     const getComments = async (slug) => {
         try {
-            const response = await axios.get(`https://api.realworld.io/api/articles/${slug}/comments`);
+            const token = localStorage.getItem('token');
+            const response = await axios.get(`https://api.realworld.io/api/articles/${slug}/comments`,
+              {
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "Authorization": `Bearer ${token}`
+                                }
+                            }
+            );
                  setComments(response.data.comments);
+                 setLoading(2);
         } catch (error) {
             console.error('Lỗi khi lấy dữ liệu comment:', error);
         }
     };
     
+   
+    // const addComment = async (slug, comment) => {
+    //     try {
+    //         const token = localStorage.getItem('token');
+    //         await axios.post(
+    //             `https://api.realworld.io/api/articles/${slug}/comments`,
+    //             { comment: { body: comment } },
+    //             {
+    //                 headers: {
+    //                     "Content-Type": "application/json",
+    //                     "Authorization": `Bearer ${token}`
+    //                 }
+    //             }
+    //         );
+    //         const response = await axios.get(`https://api.realworld.io/api/articles/${slug}/comments`);
+    //         updateComments(response.data.comments);
+    //     } catch (error) {
+    //         console.error('Lỗi khi thêm comment:', error);
+    //     }
+    // };
+    
     const addComment = async (slug, comment) => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post(
+            await axios.post(
                 `https://api.realworld.io/api/articles/${slug}/comments`,
-                { comments: { body: comment } },
+                { comment: { body: comment } },
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -37,22 +77,34 @@ function FeedDetail({ selectedFeed, showModal, setShowModal }) {
                     }
                 }
             );
-            getComments(slug);
+            
+            setComments(prevComments => [
+                ...prevComments,
+                { body: comment }
+            ]);
+            
+            setCommentContent('');
         } catch (error) {
             console.error('Lỗi khi thêm comment:', error);
         }
     };
     
+    
+    
     const handleCommentSubmit = async () => {
         try {
             if (commentContent.trim() !== '') {
                 await addComment(selectedFeed.slug, commentContent);
+                getComments(selectedFeed.slug);
                 setCommentContent('');
             }
         } catch (error) {
             console.error('Lỗi khi gửi bình luận:', error);
         }
     };
+    
+    
+    
     
     useEffect(() => {
         if (showModal && selectedFeed) {
@@ -68,8 +120,8 @@ function FeedDetail({ selectedFeed, showModal, setShowModal }) {
                     <Modal.Title className='container' >
                         <div >
                             <div className='col-12'>
-                                <div>
-                                    Bài viết của {selectedFeed && selectedFeed.author.username}
+                                <div >
+                                    <h3 style={{textAlign:'center'}}>Bài viết của {selectedFeed && selectedFeed.author.username}</h3>
                                 </div>
 
                             </div>
@@ -102,12 +154,21 @@ function FeedDetail({ selectedFeed, showModal, setShowModal }) {
                                 <p >{selectedFeed.body}</p>
                                     
                                 </div>
-                                <div>
-                        {selectedFeed.tagList && selectedFeed.tagList.map((tag, index) => (
-                            <span key={index} className='badge badge-info' style={{ marginRight: '5px' }}>
-                                {`#${tag}`}
-                            </span>
-                        ))}
+                                <div >
+                                {
+                                        selectedFeed.tagList.length !== 0 && (
+                                            <p>
+                                                {
+                                                selectedFeed.tagList.map((tag, index) => {
+                                                        return (
+                                                            <span style={{ marginLeft: "7px" }} key={index}><Link>#{tag}</Link></span>
+                                                        )
+                                                    })
+                                                }
+                                            </p>
+                                        )
+                                    }
+                        
                     </div>
 
                     <div className={styles.followed}>
@@ -125,7 +186,7 @@ function FeedDetail({ selectedFeed, showModal, setShowModal }) {
                             <Button className='col-6' variant="outline-secondary" >
                             <span><i className="fa fa-comment-o" aria-hidden="true"></i> Comment</span>
                             </Button>
-                            <form className='card comment-form ng-pristine ng-valid' style={{marginTop:'20px'}} >
+                            <div className='card comment-form ng-pristine ng-valid' style={{marginTop:'20px'}}  >
                                       <div className='card-block'>
                                     <textarea
                                     value={commentContent}
@@ -136,12 +197,27 @@ function FeedDetail({ selectedFeed, showModal, setShowModal }) {
                                 />
                                 </div>
 
-                                <div className='row'>
-                                    <div className='col-12'>
-                                            <button  className='btn btn-success' style={{float:'right', marginTop:'10px'}}> Post comment</button>
+                                    <div className='row'>
+                                        <div className='col-12'>
+                                            <button onClick={handleCommentSubmit} className='btn btn-success' style={{ float: 'right', marginTop: '10px', marginRight: '15px' }}> Post comment</button>
+                                        </div>
                                     </div>
-                                 </div>
-                                </form>
+
+                                </div>
+                                <div>
+                                    {loading === 1 && <div id={styles.loader}></div>}
+                                    {loading === 2 && (<div className='row'>
+                                        {Array.isArray(comments) && comments.map((comment, index) => (
+                                            <div key={index}>
+                                                <p>{comment.body}</p>
+                                            </div>
+                                        ))}
+                                    </div>)}
+                                </div>
+
+
+
+
                         </div>
                             
                         </div>
