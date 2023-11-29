@@ -63,7 +63,7 @@ function Header() {
                                         My Profile
                                     </Link>
                                 </li>
-                                <li onClick={handleLogOut}>Log out</li>
+                                <li onClick={handleLogOut}><Link to={"/#"}> Log out</Link></li>
                             </ul>
                         </div>
                     </div>
