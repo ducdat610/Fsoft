@@ -1,26 +1,65 @@
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from '../assets/css/posts.module.css'
+import axios from 'axios';
 
 
 function FeedDetail({ selectedFeed, showModal, setShowModal }) {
 
-    const [comment, setComment] = useState('');
+     const [comments, setComments] = useState('');
+    const [commentContent, setCommentContent] = useState('');
 
     const displayDate = (time) => {
         const date = new Date(time);
         return `${date.getMonth()} - ${date.getDate()} - ${date.getFullYear()}`
     }
 
-    const handleComment = () => {
-        // Thực hiện các thao tác cần thiết để lưu comment, chẳng hạn gọi API để lưu comment
-        // Sau khi lưu thành công, có thể cập nhật danh sách comment và làm sạch trường nhập comment.
-        // Ví dụ:
-        // saveCommentToAPI(selectedFeed.id, comment);
-        // fetchCommentsForFeed(selectedFeed.id);
-        setComment('');
-      };
+    const getComments = async (slug) => {
+        try {
+            const response = await axios.get(`https://api.realworld.io/api/articles/${slug}/comments`);
+                 setComments(response.data.comments);
+        } catch (error) {
+            console.error('Lỗi khi lấy dữ liệu comment:', error);
+        }
+    };
+    
+    const addComment = async (slug, comment) => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.post(
+                `https://api.realworld.io/api/articles/${slug}/comments`,
+                { comments: { body: comment } },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
+                }
+            );
+            getComments(slug);
+        } catch (error) {
+            console.error('Lỗi khi thêm comment:', error);
+        }
+    };
+    
+    const handleCommentSubmit = async () => {
+        try {
+            if (commentContent.trim() !== '') {
+                await addComment(selectedFeed.slug, commentContent);
+                setCommentContent('');
+            }
+        } catch (error) {
+            console.error('Lỗi khi gửi bình luận:', error);
+        }
+    };
+    
+    useEffect(() => {
+        if (showModal && selectedFeed) {
+            getComments(selectedFeed.slug);
+        }
+    }, [showModal, selectedFeed]);
+    
     return (
         <>
             <Modal  show={showModal} onHide={() => setShowModal(false)}>
@@ -83,15 +122,26 @@ function FeedDetail({ selectedFeed, showModal, setShowModal }) {
                             <span><i className="fa fa-thumbs-o-up" aria-hidden="true"></i> Like</span>
                             </Button>
                             
-                            <Button className='col-6' variant="outline-secondary" onClick={handleComment}>
+                            <Button className='col-6' variant="outline-secondary" >
                             <span><i className="fa fa-comment-o" aria-hidden="true"></i> Comment</span>
                             </Button>
-                            <textarea
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    placeholder="comment..."
-                    rows="4"
-                />
+                            <form className='card comment-form ng-pristine ng-valid' style={{marginTop:'20px'}} >
+                                      <div className='card-block'>
+                                    <textarea
+                                    value={commentContent}
+                                    onChange={(e) => setCommentContent(e.target.value)}
+                                    placeholder="Write a comment ..."
+                                    rows="4"
+                                    className='form-control ng-pristine ng-untouched ng-valid ng-empty'
+                                />
+                                </div>
+
+                                <div className='row'>
+                                    <div className='col-12'>
+                                            <button  className='btn btn-success' style={{float:'right', marginTop:'10px'}}> Post comment</button>
+                                    </div>
+                                 </div>
+                                </form>
                         </div>
                             
                         </div>
