@@ -25,9 +25,10 @@ function Feeds(props) {
             setOffSet(0);
         }
         else{
-            getGlobalFeeds();
+            // getGlobalFeeds();
+            setLoading(1);
         }
-    }, [loginState, props.api])
+    }, [props.api])
 
     useEffect(() => {
         setLoading(1);
@@ -59,7 +60,7 @@ function Feeds(props) {
         let count = data.data.articlesCount;
         setCountFeeds(count);
         let countPage = Math.floor(count / 10);
-        countfeeds % 10 !== 0 ? countPage++ : countPage = countPage + 0;
+        count % 10 !== 0 ? countPage++ : countPage = countPage + 0;
         if (offset === 0) {
             // console.log('enter thia');
             if (countPage >= 4) {
