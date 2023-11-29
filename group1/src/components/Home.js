@@ -13,6 +13,9 @@ function Home() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     console.log(api);
+    useEffect(() => {
+        setApi('https://api.realworld.io/api/articles?limit=10');
+    }, [loginState])
     return (
         <div className='container-fluid'>
             <div className='row'>
