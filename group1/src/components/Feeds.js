@@ -3,10 +3,8 @@ import axios from 'axios'
 import styles from '../assets/css/posts.module.css'
 import FeedDetail from './FeedDetail';
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-
+import EditPost from './EditPost'
 function Feeds(props) {
-    const loginState = useSelector(state => state.login.value);
     const [feeds, setFeeds] = useState([]);
     const [countfeeds, setCountFeeds] = useState(0);
     const [selectedFeed, setSelectedFeed] = useState(null);
@@ -15,20 +13,36 @@ function Feeds(props) {
     const [pageBtn, setPageBtn] = useState([]);
     const [change, setChange] = useState(true);
     const [loading, setLoading] = useState(1);
+    const [author, setAuthor] = useState({ username: "", image: "" });
+
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => {
+        setShow(true);
+    }
+    const [editArticle, setEditArticle] = useState(null);
     useEffect(() => {
         getGlobalFeeds();
         setLoading(2);
+        const user = localStorage.getItem('user');
+        if (user) {
+            setAuthor(JSON.parse(user));
+        }
     }, [])
 
+    useEffect(() => {
+        if(editArticle){
+            handleShow();
+        }
+    }, [editArticle])
     useEffect(() => {
         if (offset !== 0) {
             setOffSet(0);
         }
-        else{
-            // getGlobalFeeds();
+        else {
             setLoading(1);
         }
-    }, [props.api])
+    }, [props.changes, props.api])
 
     useEffect(() => {
         setLoading(1);
@@ -62,7 +76,6 @@ function Feeds(props) {
         let countPage = Math.floor(count / 10);
         count % 10 !== 0 ? countPage++ : countPage = countPage + 0;
         if (offset === 0) {
-            // console.log('enter thia');
             if (countPage >= 4) {
                 setPageBtn([1, 2, 3, 4]);
             } else {
@@ -117,7 +130,6 @@ function Feeds(props) {
             setOffSet((index - 1) * 10);
         }
     }
-    // console.log(feeds);
     const handleLike = async (slug, index, favorite) => {
         try {
             const token = localStorage.getItem('token');
@@ -149,7 +161,22 @@ function Feeds(props) {
             console.log(error);
         }
     }
-    // console.log(countfeeds);
+    const handleDeleteFeed = async (slug) => {
+        const token = localStorage.getItem('token');
+        console.log(slug);
+        try {
+            await axios.delete(`https://api.realworld.io/api/articles/${slug}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+            setLoading(1);
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
     return (
         <>
             {loading === 1 && <div id={styles.loader}></div>}
@@ -161,14 +188,27 @@ function Feeds(props) {
                             return (
                                 <div className={styles.posts} key={index}>
                                     <div className={styles.authors}>
-                                        <div className={styles.avartarPost}>
-                                            <img src={feed.author.image
-                                            } alt='error' />
+                                        <div className={styles.infor}>
+                                            <div className={styles.avartarPost}>
+                                                <img src={feed.author.image
+                                                } alt='error' />
+                                            </div>
+                                            <div className={styles.authorProfile}>
+                                                <p className={styles.name}>{feed.author.username}</p>
+                                                <p className={styles.createdat}>{displayDate(feed.createdAt)}</p>
+                                            </div>
                                         </div>
-                                        <div className={styles.authorProfile}>
-                                            <p className={styles.name}>{feed.author.username}</p>
-                                            <p className={styles.createdat}>{displayDate(feed.createdAt)}</p>
-                                        </div>
+                                        {author !== "" && feed.author.username === author.username && (
+                                            <div className={styles.actions}>
+                                                <button
+                                                    onClick={() => setEditArticle(feed)}
+                                                ><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                                                <button
+                                                    onClick={() => handleDeleteFeed(feed.slug)}
+                                                ><i className="fa fa-trash" aria-hidden="true"></i></button>
+                                            </div>
+                                        )}
+
                                     </div>
                                     {
                                         feed.tagList.length !== 0 && (
@@ -233,6 +273,7 @@ function Feeds(props) {
                     )
                 }
             </div>
+            <EditPost show={show} handleClose={handleClose} Article={editArticle}></EditPost>
             <FeedDetail
                 selectedFeed={selectedFeed}
                 showModal={showModal}
