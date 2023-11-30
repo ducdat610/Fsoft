@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Card, Col, Container, Form, Row } from "react-bootstrap";
-import "../styles/Setting.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -19,22 +18,16 @@ const Setting = () => {
     const fetchData = async () => {
       try {
         const userFromLocalStorage = JSON.parse(localStorage.getItem("user"));
-        // const tokenFromLocalStorage = localStorage.getItem("token");
         if (userFromLocalStorage) {
           setUser(userFromLocalStorage);
         }
-        // if (tokenFromLocalStorage) {
-        //   setToken(tokenFromLocalStorage);
-        // }
+
         const response = await axios.get("https://api.realworld.io/api/user", {
-          // headers: {
-          //   Authorization: `Bearer ${tokenFromLocalStorage}`,
-          // },
+
         });
         const userData = response.data.user;
         setUser(userData);
         localStorage.setItem("user", JSON.stringify(userData));
-        // console.log(tokenFromLocalStorage);
         console.log(userFromLocalStorage);
       } catch (error) {
         console.log(error.message);
@@ -42,6 +35,7 @@ const Setting = () => {
     };
     fetchData();
   }, []);
+
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -55,7 +49,7 @@ const Setting = () => {
       .then(() => {
         localStorage.setItem("user", JSON.stringify(user));
         toast.success("Updated successfully!");
-        nav("/setting")
+        nav("/profile")
       })
       .catch((error) => {
         console.log(error.message);
@@ -63,41 +57,6 @@ const Setting = () => {
     console.log(user);
   };
 
-
-  // const handleUpdate = async (e) => {
-  //   e.preventDefault();
-  
-  //   try {
-  //     const response = await axios.put(
-  //       "https://api.realworld.io/api/user",
-  //       {
-  //         "user": {
-  //           email: email,
-  //           password: password,
-  //           username: username,
-  //           bio: bio,
-  //           image: image,
-  //         },
-  //       },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`, // Uncomment this if needed
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
-  
-  //     const updatedUser = response.data.user;
-  //     setUser((prevUser) => ({ ...prevUser, ...updatedUser }));
-  //     localStorage.setItem("user", JSON.stringify(updatedUser));
-  //     toast.success("Updated successfully!");
-  //     nav("/setting");
-  //   } catch (error) {
-  //     console.error("Update failed:", error.message);
-  //   }
-  // };
-    
-  
 
   const handleSignOut = () => {
     localStorage.clear();

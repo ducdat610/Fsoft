@@ -7,6 +7,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import { ToastContainer } from 'react-toastify';
 import Sign_Up from './Screen/Sign_Up';
 import Setting from './Screen/Setting';
+import Profile from './Screen/Profile';
 function App() {
   return (
     <div className="App">
@@ -17,6 +18,7 @@ function App() {
           <Route path='/sign_in' element={<Sign_In/>}></Route>
           <Route path='sign_up' element={<Sign_Up/>}></Route>
           <Route path='setting' element={<Setting/>}></Route>
+          <Route path='profile' element={<Profile/>}></Route>
         </Routes>
         <ToastContainer/>
       </BrowserRouter>
