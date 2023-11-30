@@ -12,9 +12,10 @@ function Home() {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    console.log(api);
+    const [change, setChange] = useState(true);
     useEffect(() => {
         setApi('https://api.realworld.io/api/articles?limit=10');
+        setChange(!change);
     }, [loginState])
     return (
         <div className='container-fluid'>
@@ -53,7 +54,7 @@ function Home() {
                             <span>Khai oi ban nghi gi the</span>
                         </div>
                     </div>
-                    <Feeds api={api}></Feeds>
+                    <Feeds api={api} changes={change}></Feeds>
                 </div>
                 <div className={`col-3 ${styles.home3}`}>
                     <Tags></Tags>

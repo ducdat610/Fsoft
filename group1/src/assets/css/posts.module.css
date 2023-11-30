@@ -5,8 +5,24 @@
     background-color: #242526;
     margin-top: 20px;
     border-radius: 10px;
+    justify-content: space-between;
 }
 
+.infor{
+    display: flex;
+    height: 100%;
+}
+.actions{
+    display: flex;
+    height: 100%;
+}
+
+.actions button{
+    background-color: #242526;
+    border: none;
+    font-size: 20px;
+    color: white;
+}
 .posts {
     padding: 20px;
     width: 80%;
@@ -156,4 +172,29 @@
 
 .liked{
     color: #3498db;
+}
+
+.tagGroup{
+    display: flex;
+}
+
+.tagItem{
+    background-color: gray;
+    box-sizing: border-box;
+    padding: 5px 10px 5px 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.tagItem p{
+    margin: 0;
+}
+
+.tagItem span{
+    margin-left: 5px;
+}
+
+.tagItem i:hover{
+    cursor: pointer;
 }
