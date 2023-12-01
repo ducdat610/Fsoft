@@ -19,8 +19,8 @@ function App() {
           <Route path='/' element={<Home/>}></Route>
           <Route path='/sign_in' element={<Sign_In/>}></Route>
           <Route path='sign_up' element={<Sign_Up/>}></Route>
-          <Route path="/my_articles" element={<ViewMyArticles />} /> 
-          <Route path="/favorited_articles" element={<ViewMyFavoritedArticles />} /> 
+          <Route path="/my_articles/:username" element={<ViewMyArticles />} /> 
+          <Route path="/favorited_articles/:username" element={<ViewMyFavoritedArticles />} /> 
           <Route path='/tag' element={<Tag />} />
           <Route path='/tag/:tag' element={<TagDetail />} /> 
         </Routes>

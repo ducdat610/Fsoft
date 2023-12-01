@@ -63,7 +63,6 @@ function EditPost(props) {
         console.log(newArr);
         setFeed(newArr);
     }
-    console.log(feed);
     return (
         <>
             <Modal show={props.show} onHide={props.handleClose}>
