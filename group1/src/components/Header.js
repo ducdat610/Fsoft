@@ -1,34 +1,34 @@
 import React, { useEffect, useState } from 'react'
 import styles from '../assets/css/header.module.css'
 import logo from '../assets/images/logo.png'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { login, logout } from '../features/login/loginSlice'
 
 function Header() {
     const loginState = useSelector(state => state.login.value)
+    const nav = useNavigate();
     const dispatch = useDispatch()
-    // const [isLogin, setIsLogin] = useState(false);
     const [user, setUser] = useState();
     useEffect(() => {
-        const user = localStorage.getItem('user');
-        if (user) {
-            let userObj = JSON.parse(user);
+        const userls = localStorage.getItem('user');
+        if (userls) {
+            let userObj = JSON.parse(userls);
             setUser(userObj);
             dispatch(login());
         }
     }, [])
     useEffect(() => {
-        const user = localStorage.getItem('user');
-        if (user) {
-            let userObj = JSON.parse(user);
-            console.log(userObj);
+        const userls = localStorage.getItem('user');
+        if (userls) {
+            let userObj = JSON.parse(userls);
             setUser(userObj);
         }
     }, [loginState])
     const handleLogOut = () => {
         localStorage.clear();
         dispatch(logout())
+        nav('/');
     }
     console.log(user);
     return (
@@ -59,7 +59,7 @@ function Header() {
                         <div className={styles.linkbox}>
                             <ul>
                                 <li>
-                                    <Link to="/my_articles" className="text-primary">
+                                    <Link to={`/my_articles/${user?user.username:""}`} className="text-primary">
                                         My Profile
                                     </Link>
                                 </li>

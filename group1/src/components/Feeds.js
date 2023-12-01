@@ -31,7 +31,7 @@ function Feeds(props) {
     }, [])
 
     useEffect(() => {
-        if(editArticle){
+        if (editArticle) {
             handleShow();
         }
     }, [editArticle])
@@ -194,7 +194,8 @@ function Feeds(props) {
                                                 } alt='error' />
                                             </div>
                                             <div className={styles.authorProfile}>
-                                                <p className={styles.name}>{feed.author.username}</p>
+                                                <Link to={`/my_articles/${feed.author.username}`}> <p className={styles.name}>{feed.author.username}</p>
+                                                </Link>
                                                 <p className={styles.createdat}>{displayDate(feed.createdAt)}</p>
                                             </div>
                                         </div>
@@ -273,6 +274,7 @@ function Feeds(props) {
                     )
                 }
             </div>
+            {feeds.length===0 && <p style={{color:"white"}}>No articles are here... yet.</p>}
             <EditPost show={show} handleClose={handleClose} Article={editArticle}></EditPost>
             <FeedDetail
                 selectedFeed={selectedFeed}
