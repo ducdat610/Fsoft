@@ -33,7 +33,7 @@ function Header() {
     console.log(user);
     return (
         <header className={styles.header}>
-            <NavLink to={`/`}>
+            <NavLink to={`/`} className={styles.header11}>
                 <div className={styles.header1}>
                     <img src={logo} alt='error' />
                     <h2>Fabook</h2>
@@ -59,7 +59,7 @@ function Header() {
                         <div className={styles.linkbox}>
                             <ul>
                                 <li>
-                                    <Link to={`/my_articles/${user?user.username:""}`} className="text-primary">
+                                    <Link to={`/my_articles/${user?user.username:""}`} className={styles.primary}>
                                         My Profile
                                     </Link>
                                 </li>

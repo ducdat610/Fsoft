@@ -83,7 +83,7 @@ function ViewMyArticles() {
               <i className="fa fa-globe" aria-hidden="true"></i>
             </div>
             <div className='col-10'>
-              {author && (<Link to={`/my_articles/${author.profile.username}`} className="text-primary">
+              {author && (<Link to={`/my_articles/${author.profile.username}`} className={styles.primary}>
                 My Articles
               </Link>)}
             </div>
@@ -93,7 +93,7 @@ function ViewMyArticles() {
               <i className="fa fa-user-circle" aria-hidden="true"></i>
             </div>
             <div className='col-10'>
-              {author && (<Link to={`/favorited_articles/${author.profile.username}`} className="text-primary">
+              {author && (<Link to={`/favorited_articles/${author.profile.username}`} className={styles.primary}>
                 Favorited Articles
               </Link>)}
             </div>
@@ -103,10 +103,11 @@ function ViewMyArticles() {
           <div className={styles.viewtag}>
             {author && (
               <div className={styles.userInfo}>
+                <div>
                 <img src={author.profile.image} alt="User Avatar" className={styles.avatar} />
-                <h3>{author.profile.username}</h3>
+                <h3>{author.profile.username}</h3></div>
                 {
-                  author.profile.username !== userData.username && (<div>
+                  author.profile.username !== userData.username && (<div  className={styles.flo}>
                     {follow === false && (<button onClick={handleFollow}>Follow</button>)}
                     {follow === true && (<button onClick={handleUnfollow}>Unfollow</button>)}
                   </div>)

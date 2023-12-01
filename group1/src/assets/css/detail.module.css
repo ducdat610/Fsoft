@@ -181,3 +181,18 @@
     margin-top: 10px;
     font-size: 16px;
 }
+.primary {
+    text-decoration: none;
+    color: white;
+}
+.flo {
+    margin-top: -2rem;
+    margin-left: 35vw;
+    /* background: #a6c8ff; */
+}
+.flo button {
+    background: #a6c8ff;
+    border: none;
+    border-radius: 5px;
+
+}

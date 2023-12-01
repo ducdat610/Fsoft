@@ -194,7 +194,7 @@ function Feeds(props) {
                                                 } alt='error' />
                                             </div>
                                             <div className={styles.authorProfile}>
-                                                <Link to={`/my_articles/${feed.author.username}`}> <p className={styles.name}>{feed.author.username}</p>
+                                                <Link to={`/my_articles/${feed.author.username}`} className={styles.link1}> <p className={styles.name}>{feed.author.username}</p>
                                                 </Link>
                                                 <p className={styles.createdat}>{displayDate(feed.createdAt)}</p>
                                             </div>
@@ -217,7 +217,7 @@ function Feeds(props) {
                                                 {
                                                     feed.tagList.map((tag, index) => {
                                                         return (
-                                                            <span style={{ marginRight: "7px" }} key={index}><Link>#{tag}</Link></span>
+                                                            <span style={{ marginRight: "7px" }} key={index}><Link to={`/tag/${tag}`}>#{tag}</Link></span>
                                                         )
                                                     })
                                                 }

@@ -43,8 +43,12 @@
 
 .name {
     font-weight: bold;
+    color: white;
+    text-decoration: none;
 }
-
+.link1 {
+    text-decoration: none;
+}
 .createdat {
     font-size: 12px;
 }
