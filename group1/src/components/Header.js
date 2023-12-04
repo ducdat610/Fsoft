@@ -63,6 +63,11 @@ function Header() {
                                         My Profile
                                     </Link>
                                 </li>
+                                <li>
+                                    <Link to={`/setting`} className={styles.primary}>
+                                        Edit Profile
+                                    </Link>
+                                </li>
                                 <li onClick={handleLogOut}>Log out</li>
                             </ul>
                         </div>

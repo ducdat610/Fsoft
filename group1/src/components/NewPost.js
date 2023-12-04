@@ -19,6 +19,7 @@ function NewPost(props) {
     const handleSubmit = async (values) => {
         let taglist = [];
         const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user'));
         console.log(values.tagList);
         if (values.tagList !== undefined) {
             console.log('zoday');
@@ -41,7 +42,7 @@ function NewPost(props) {
                     "Authorization": `Bearer ${token}`
                 }
             })
-            nav("/");
+            nav(`/my_articles/${user.username}`);
         }
         catch (error) {
             console.log(error);
