@@ -1,26 +1,117 @@
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from '../assets/css/posts.module.css'
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 
 function FeedDetail({ selectedFeed, showModal, setShowModal }) {
 
-    const [comment, setComment] = useState('');
+     const [comments, setComments] = useState('');
+    const [commentContent, setCommentContent] = useState('');
+    const [loading, setLoading] = useState(1);
+
+    
+    useEffect(() => {
+        if (loading === 1) {
+            getComments();
+            document.documentElement.scrollTop = 0;
+        }
+    }, [loading])
 
     const displayDate = (time) => {
         const date = new Date(time);
         return `${date.getMonth()} - ${date.getDate()} - ${date.getFullYear()}`
     }
 
-    const handleComment = () => {
-        // Thực hiện các thao tác cần thiết để lưu comment, chẳng hạn gọi API để lưu comment
-        // Sau khi lưu thành công, có thể cập nhật danh sách comment và làm sạch trường nhập comment.
-        // Ví dụ:
-        // saveCommentToAPI(selectedFeed.id, comment);
-        // fetchCommentsForFeed(selectedFeed.id);
-        setComment('');
-      };
+    const getComments = async (slug) => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.get(`https://api.realworld.io/api/articles/${slug}/comments`,
+              {
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "Authorization": `Bearer ${token}`
+                                }
+                            }
+            );
+                 setComments(response.data.comments);
+                 setLoading(2);
+        } catch (error) {
+            console.error('Lỗi khi lấy dữ liệu comment:', error);
+        }
+    };
+    
+   
+    // const addComment = async (slug, comment) => {
+    //     try {
+    //         const token = localStorage.getItem('token');
+    //         await axios.post(
+    //             `https://api.realworld.io/api/articles/${slug}/comments`,
+    //             { comment: { body: comment } },
+    //             {
+    //                 headers: {
+    //                     "Content-Type": "application/json",
+    //                     "Authorization": `Bearer ${token}`
+    //                 }
+    //             }
+    //         );
+    //         const response = await axios.get(`https://api.realworld.io/api/articles/${slug}/comments`);
+    //         updateComments(response.data.comments);
+    //     } catch (error) {
+    //         console.error('Lỗi khi thêm comment:', error);
+    //     }
+    // };
+    
+    const addComment = async (slug, comment) => {
+        try {
+            const token = localStorage.getItem('token');
+            await axios.post(
+                `https://api.realworld.io/api/articles/${slug}/comments`,
+                { comment: { body: comment } },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
+                }
+            );
+            
+            setComments(prevComments => [
+                ...prevComments,
+                { body: comment }
+            ]);
+            
+            setCommentContent('');
+        } catch (error) {
+            console.error('Lỗi khi thêm comment:', error);
+        }
+    };
+    
+    
+    
+    const handleCommentSubmit = async () => {
+        try {
+            if (commentContent.trim() !== '') {
+                await addComment(selectedFeed.slug, commentContent);
+                getComments(selectedFeed.slug);
+                setCommentContent('');
+            }
+        } catch (error) {
+            console.error('Lỗi khi gửi bình luận:', error);
+        }
+    };
+    
+    
+    
+    
+    useEffect(() => {
+        if (showModal && selectedFeed) {
+            getComments(selectedFeed.slug);
+        }
+    }, [showModal, selectedFeed]);
+    
     return (
         <>
             <Modal  show={showModal} onHide={() => setShowModal(false)}>
@@ -29,8 +120,8 @@ function FeedDetail({ selectedFeed, showModal, setShowModal }) {
                     <Modal.Title className='container' >
                         <div >
                             <div className='col-12'>
-                                <div>
-                                    Bài viết của {selectedFeed && selectedFeed.author.username}
+                                <div >
+                                    <h3 style={{textAlign:'center'}}>Bài viết của {selectedFeed && selectedFeed.author.username}</h3>
                                 </div>
 
                             </div>
@@ -63,12 +154,21 @@ function FeedDetail({ selectedFeed, showModal, setShowModal }) {
                                 <p >{selectedFeed.body}</p>
                                     
                                 </div>
-                                <div>
-                        {selectedFeed.tagList && selectedFeed.tagList.map((tag, index) => (
-                            <span key={index} className='badge badge-info' style={{ marginRight: '5px' }}>
-                                {`#${tag}`}
-                            </span>
-                        ))}
+                                <div >
+                                {
+                                        selectedFeed.tagList.length !== 0 && (
+                                            <p>
+                                                {
+                                                selectedFeed.tagList.map((tag, index) => {
+                                                        return (
+                                                            <span style={{ marginLeft: "7px" }} key={index}><Link>#{tag}</Link></span>
+                                                        )
+                                                    })
+                                                }
+                                            </p>
+                                        )
+                                    }
+                        
                     </div>
 
                     <div className={styles.followed}>
@@ -83,15 +183,41 @@ function FeedDetail({ selectedFeed, showModal, setShowModal }) {
                             <span><i className="fa fa-thumbs-o-up" aria-hidden="true"></i> Like</span>
                             </Button>
                             
-                            <Button className='col-6' variant="outline-secondary" onClick={handleComment}>
+                            <Button className='col-6' variant="outline-secondary" >
                             <span><i className="fa fa-comment-o" aria-hidden="true"></i> Comment</span>
                             </Button>
-                            <textarea
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    placeholder="comment..."
-                    rows="4"
-                />
+                            <div className='card comment-form ng-pristine ng-valid' style={{marginTop:'20px'}}  >
+                                      <div className='card-block'>
+                                    <textarea
+                                    value={commentContent}
+                                    onChange={(e) => setCommentContent(e.target.value)}
+                                    placeholder="Write a comment ..."
+                                    rows="4"
+                                    className='form-control ng-pristine ng-untouched ng-valid ng-empty'
+                                />
+                                </div>
+
+                                    <div className='row'>
+                                        <div className='col-12'>
+                                            <button onClick={handleCommentSubmit} className='btn btn-success' style={{ float: 'right', marginTop: '10px', marginRight: '15px' }}> Post comment</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div>
+                                    {loading === 1 && <div id={styles.loader}></div>}
+                                    {loading === 2 && (<div className='row'>
+                                        {Array.isArray(comments) && comments.map((comment, index) => (
+                                            <div key={index}>
+                                                <p>{comment.body}</p>
+                                            </div>
+                                        ))}
+                                    </div>)}
+                                </div>
+
+
+
+
                         </div>
                             
                         </div>
