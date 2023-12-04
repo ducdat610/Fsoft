@@ -4,7 +4,11 @@ import styles from '../assets/css/posts.module.css'
 import FeedDetail from './FeedDetail';
 import { Link } from 'react-router-dom'
 import EditPost from './EditPost'
+import { useSelector } from 'react-redux'
+
 function Feeds(props) {
+    const loginState = useSelector(state => state.login.value);
+
     const [feeds, setFeeds] = useState([]);
     const [countfeeds, setCountFeeds] = useState(0);
     const [selectedFeed, setSelectedFeed] = useState(null);
@@ -118,14 +122,24 @@ function Feeds(props) {
         return `${date.getMonth()} - ${date.getDate()} - ${date.getFullYear()}`
     }
 
-    const openModal = async (slug) => {
+    const openModal = async (slug, index) => {
         try {
-            const response = await axios.get(`https://api.realworld.io/api/articles/${slug}`);
-            setSelectedFeed(response.data.article);
+            const token = localStorage.getItem('token');
+
+            const response = await axios.get(`https://api.realworld.io/api/articles/${slug}`,{
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+            setSelectedFeed({...response.data.article,index:index});
+            console.log(setSelectedFeed)
             setShowModal(true);
+
         } catch (error) {
             console.error('Error fetching article details:', error);
         }
+        console.log(index)
     };
 
     const handleSetPagging = (index) => {
@@ -133,7 +147,8 @@ function Feeds(props) {
             setOffSet((index - 1) * 10);
         }
     }
-    const handleLike = async (slug, index, favorite) => {
+    const handleLike = async (slug, index, favorite, type=0) => {
+        console.log(123)
         try {
             const token = localStorage.getItem('token');
             if (favorite) {
@@ -146,6 +161,10 @@ function Feeds(props) {
                 );
                 feeds[index].favorited = response.data.article.favorited;
                 feeds[index].favoritesCount = response.data.article.favoritesCount;
+                console.log(response.data.article)
+                if(type!=0){
+                    setSelectedFeed({...response.data.article,index:index})
+                }
                 setChange(!change);
             }
             else {
@@ -157,6 +176,12 @@ function Feeds(props) {
                 });
                 feeds[index].favorited = response.data.article.favorited;
                 feeds[index].favoritesCount = response.data.article.favoritesCount;
+                console.log(response.data.article)
+
+                if(type!=0){
+                    setSelectedFeed({...response.data.article,index:index})
+
+                }
                 setChange(!change);
             }
 
@@ -197,7 +222,7 @@ function Feeds(props) {
                                                 } alt='error' />
                                             </div>
                                             <div className={styles.authorProfile}>
-                                                <Link to={`/my_articles/${feed.author.username}`} className={styles.link1}> <p className={styles.name}>{feed.author.username}</p>
+                                                <Link  to={loginState? `/my_articles/${feed.author.username}`:'/'} className={styles.link1}> <p className={styles.name}>{feed.author.username}</p>
                                                 </Link>
                                                 <p className={styles.createdat}>{displayDate(feed.createdAt)}</p>
                                             </div>
@@ -231,7 +256,7 @@ function Feeds(props) {
 
                                         <p className={styles.title}>{feed.title}</p>
                                         <p className={styles.description}>{feed.description}</p>
-                                        <p onClick={() => openModal(feed.slug)} className={styles.readmore}>Readmore...</p>
+                                        <p onClick={() => openModal(feed.slug,index)} className={styles.readmore}>Readmore...</p>
 
                                     </div>
                                     <div className={styles.followed}>
@@ -242,7 +267,7 @@ function Feeds(props) {
                                             onClick={() => handleLike(feed.slug, index, feed.favorited)}>
                                             <span><i className="fa fa-thumbs-up" aria-hidden="true"></i> Like</span>
                                         </div>
-                                        <div onClick={() => openModal(feed.slug)}><span><i className="fa fa-comment-o" aria-hidden="true"></i> Comment</span></div>
+                                        <div onClick={() => openModal(feed.slug, index)}><span><i className="fa fa-comment-o" aria-hidden="true"></i> Comment</span></div>
 
                                     </div>
                                 </div>
@@ -283,6 +308,7 @@ function Feeds(props) {
                 selectedFeed={selectedFeed}
                 showModal={showModal}
                 setShowModal={setShowModal}
+                handleLike={handleLike}
                 
             />
         </>
