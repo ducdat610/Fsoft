@@ -6,6 +6,25 @@ body{
     color:#0866ff !important;
 }
 
+.user-info {
+    background-color: #18191a;
+}
+
+.container-centered {
+    margin: 17px 1px;
+    text-align: center;
+    height: 99%;
+    padding-left: 22%;
+}
+
+.container-centered img {
+    border-radius: 52%;
+    width: 16%;
+}
+
+.articles-toggle {
+    margin: 22px 2px;
+}
 .modal-dialog{
     /* width: 80% !important; */
     width: 900px !important;
