@@ -12,20 +12,6 @@ function FeedDetail({ selectedFeed, showModal, setShowModal, handleLike }) {
     const [commentContent, setCommentContent] = useState('');
 
 
-<<<<<<< HEAD
-=======
-     const [comments, setComments] = useState('');
-    const [commentContent, setCommentContent] = useState('');
-    const [loading, setLoading] = useState(1);
-
-    
-    useEffect(() => {
-        if (loading === 1) {
-            getComments();
-            document.documentElement.scrollTop = 0;
-        }
-    }, [loading])
->>>>>>> ed3d47e1b95ae8ac1e4b89891107909f77b7dd90
 
     const displayDate = (time) => {
         const date = new Date(time);
@@ -36,7 +22,6 @@ function FeedDetail({ selectedFeed, showModal, setShowModal, handleLike }) {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.get(`https://api.realworld.io/api/articles/${slug}/comments`,
-<<<<<<< HEAD
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -45,50 +30,14 @@ function FeedDetail({ selectedFeed, showModal, setShowModal, handleLike }) {
                 }
             );
             setComments(response.data.comments);
-=======
-              {
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    "Authorization": `Bearer ${token}`
-                                }
-                            }
-            );
-                 setComments(response.data.comments);
-                 setLoading(2);
->>>>>>> ed3d47e1b95ae8ac1e4b89891107909f77b7dd90
         } catch (error) {
             console.error('Lỗi khi lấy dữ liệu comment:', error);
         }
     };
-<<<<<<< HEAD
 
 
 
 
-=======
-    
-   
-    // const addComment = async (slug, comment) => {
-    //     try {
-    //         const token = localStorage.getItem('token');
-    //         await axios.post(
-    //             `https://api.realworld.io/api/articles/${slug}/comments`,
-    //             { comment: { body: comment } },
-    //             {
-    //                 headers: {
-    //                     "Content-Type": "application/json",
-    //                     "Authorization": `Bearer ${token}`
-    //                 }
-    //             }
-    //         );
-    //         const response = await axios.get(`https://api.realworld.io/api/articles/${slug}/comments`);
-    //         updateComments(response.data.comments);
-    //     } catch (error) {
-    //         console.error('Lỗi khi thêm comment:', error);
-    //     }
-    // };
-    
->>>>>>> ed3d47e1b95ae8ac1e4b89891107909f77b7dd90
     const addComment = async (slug, comment) => {
         try {
             const token = localStorage.getItem('token');
@@ -102,35 +51,21 @@ function FeedDetail({ selectedFeed, showModal, setShowModal, handleLike }) {
                     }
                 }
             );
-<<<<<<< HEAD
 
-=======
-            
->>>>>>> ed3d47e1b95ae8ac1e4b89891107909f77b7dd90
             setComments(prevComments => [
                 ...prevComments,
                 { body: comment }
             ]);
-<<<<<<< HEAD
-=======
-            
->>>>>>> ed3d47e1b95ae8ac1e4b89891107909f77b7dd90
             setCommentContent('');
         } catch (error) {
             console.error('Lỗi khi thêm comment:', error);
         }
     };
-<<<<<<< HEAD
 
 
 
 
 
-=======
-    
-    
-    
->>>>>>> ed3d47e1b95ae8ac1e4b89891107909f77b7dd90
     const handleCommentSubmit = async () => {
         try {
             if (commentContent.trim() !== '') {
@@ -142,23 +77,15 @@ function FeedDetail({ selectedFeed, showModal, setShowModal, handleLike }) {
             console.error('Lỗi khi gửi bình luận:', error);
         }
     };
-<<<<<<< HEAD
 
 
 
 
-=======
-    
-    
-    
-    
->>>>>>> ed3d47e1b95ae8ac1e4b89891107909f77b7dd90
     useEffect(() => {
         if (showModal && selectedFeed) {
             getComments(selectedFeed.slug);
         }
     }, [showModal, selectedFeed]);
-<<<<<<< HEAD
 
 
 
@@ -181,9 +108,6 @@ function FeedDetail({ selectedFeed, showModal, setShowModal, handleLike }) {
 
 
 
-=======
-    
->>>>>>> ed3d47e1b95ae8ac1e4b89891107909f77b7dd90
     return (
         <>
             <Modal show={showModal} onHide={() => setShowModal(false)}>
@@ -192,11 +116,7 @@ function FeedDetail({ selectedFeed, showModal, setShowModal, handleLike }) {
                         <div >
                             <div className='col-12'>
                                 <div >
-<<<<<<< HEAD
                                     <h3 style={{ textAlign: 'center' }}> {selectedFeed && selectedFeed.author.username}'s Article</h3>
-=======
-                                    <h3 style={{textAlign:'center'}}>Bài viết của {selectedFeed && selectedFeed.author.username}</h3>
->>>>>>> ed3d47e1b95ae8ac1e4b89891107909f77b7dd90
                                 </div>
 
                             </div>
@@ -219,40 +139,14 @@ function FeedDetail({ selectedFeed, showModal, setShowModal, handleLike }) {
                                             </div>
                                             <div className='col-9' style={{ fontWeight: 'bold', }}>
                                                 <span>{selectedFeed.author.username} </span>
-                                                <div> <span style={{ fontWeight: 'lighter'}} id={'text-author-detail'}> {displayDate(selectedFeed.createdAt)}</span></div>
+                                                <div> <span style={{ fontWeight: 'lighter', placeSelf:'center'}}> {displayDate(selectedFeed.createdAt)}</span></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-<<<<<<< HEAD
                                 <h3 style={{ marginBottom: '40px', marginTop: '20px', fontStyle: 'italic' }}>{selectedFeed.title}</h3>
                                 <div className='border border-secondary ' style={{ borderRadius: '5px', marginBottom: '10px', padding: '10px 10px 1px 9px' }}>
                                     <p >{selectedFeed.body}</p>
-=======
-                            </div>
-                            </div>
-                                <h3 style={{ marginBottom: '40px', marginTop: '20px', fontStyle:'italic' }}>{selectedFeed.title}</h3>
-                                <div className='border border-secondary ' style={{borderRadius:'5px', marginBottom:'10px', padding:'10px 10px 1px 9px'}}>
-                                <p >{selectedFeed.body}</p>
-                                    
-                                </div>
-                                <div >
-                                {
-                                        selectedFeed.tagList.length !== 0 && (
-                                            <p>
-                                                {
-                                                selectedFeed.tagList.map((tag, index) => {
-                                                        return (
-                                                            <span style={{ marginLeft: "7px" }} key={index}><Link>#{tag}</Link></span>
-                                                        )
-                                                    })
-                                                }
-                                            </p>
-                                        )
-                                    }
-                        
-                    </div>
->>>>>>> ed3d47e1b95ae8ac1e4b89891107909f77b7dd90
 
                                 </div>
                                 <div >
@@ -278,58 +172,11 @@ function FeedDetail({ selectedFeed, showModal, setShowModal, handleLike }) {
                             </div>
 
                         )}
-<<<<<<< HEAD
                         <div className='container' style={{ marginTop: '20px' }}>
                             <div className='col-12' >
                                 <Button className='col-6' variant="outline-secondary" onClick={handleLike}>
                                     <span><i className="fa fa-thumbs-o-up" aria-hidden="true"></i> Like</span>
                                 </Button>
-=======
-                        <div className='container' style={{marginTop:'20px'}}>
-                        <div className='col-12' >
-                            <Button className='col-6' variant="outline-secondary" onClick={() => setShowModal(false)}>
-                            <span><i className="fa fa-thumbs-o-up" aria-hidden="true"></i> Like</span>
-                            </Button>
-                            
-                            <Button className='col-6' variant="outline-secondary" >
-                            <span><i className="fa fa-comment-o" aria-hidden="true"></i> Comment</span>
-                            </Button>
-                            <div className='card comment-form ng-pristine ng-valid' style={{marginTop:'20px'}}  >
-                                      <div className='card-block'>
-                                    <textarea
-                                    value={commentContent}
-                                    onChange={(e) => setCommentContent(e.target.value)}
-                                    placeholder="Write a comment ..."
-                                    rows="4"
-                                    className='form-control ng-pristine ng-untouched ng-valid ng-empty'
-                                />
-                                </div>
-
-                                    <div className='row'>
-                                        <div className='col-12'>
-                                            <button onClick={handleCommentSubmit} className='btn btn-success' style={{ float: 'right', marginTop: '10px', marginRight: '15px' }}> Post comment</button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div>
-                                    {loading === 1 && <div id={styles.loader}></div>}
-                                    {loading === 2 && (<div className='row'>
-                                        {Array.isArray(comments) && comments.map((comment, index) => (
-                                            <div key={index}>
-                                                <p>{comment.body}</p>
-                                            </div>
-                                        ))}
-                                    </div>)}
-                                </div>
-
-
-
-
-                        </div>
-                            
-                        </div>
->>>>>>> ed3d47e1b95ae8ac1e4b89891107909f77b7dd90
 
                                 <Button className='col-6' variant="outline-secondary" >
                                     <span><i className="fa fa-comment-o" aria-hidden="true"></i> Comment</span>
