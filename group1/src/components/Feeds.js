@@ -16,7 +16,10 @@ function Feeds(props) {
     const [author, setAuthor] = useState({ username: "", image: "" });
 
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setShow(false);
+        setLoading(1);
+    }
     const handleShow = () => {
         setShow(true);
     }
@@ -274,7 +277,7 @@ function Feeds(props) {
                     )
                 }
             </div>
-            {feeds.length===0 && <p style={{color:"white"}}>No articles are here... yet.</p>}
+            {loading !== 1 && feeds.length===0 && <p style={{color:"white"}}>No articles are here... yet.</p>}
             <EditPost show={show} handleClose={handleClose} Article={editArticle}></EditPost>
             <FeedDetail
                 selectedFeed={selectedFeed}

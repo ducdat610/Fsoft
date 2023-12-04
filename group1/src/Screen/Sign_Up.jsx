@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
-import {  Button,  Col,  Container,  Form,  FormControl,  FormGroup,  Row,} from "react-bootstrap";
+import { Button, Col, Container, Form, FormControl, FormGroup, Row, } from "react-bootstrap";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
@@ -28,16 +28,16 @@ const Sign_Up = () => {
     }
 
     if (!isproceed) {
-      toast(err); 
+      toast(err);
     } else {
       if (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email)) {
       } else {
-          isproceed = false;
-          toast.warning("Please enter the valid Email");
+        isproceed = false;
+        toast.warning("Please enter the valid Email");
       }
-  }
-  return isproceed;
-};
+    }
+    return isproceed;
+  };
 
   const handlesubmit = (e) => {
     e.preventDefault();
@@ -58,7 +58,16 @@ const Sign_Up = () => {
           nav("/sign_in");
         })
         .catch((err) => {
-          toast.error("Failed :" + err.message);
+          console.log(err);
+          if (err.response.data.errors.email) {
+            err.response.data.errors.email.forEach((error) => {
+              toast.error("Failed : email " + error);
+            })
+          }
+          else if (err.response.data.errors.username)
+            err.response.data.errors.username.forEach((error) => {
+              toast.error("Failed : username " + error);
+            })
         });
     }
   };
@@ -68,7 +77,7 @@ const Sign_Up = () => {
       <Row>
         <Col md={{ span: 6, offset: 3 }}>
           <div>
-            <h2 className="text-center">Sign Up</h2>
+            <h2 className="text-center text-light">Sign Up</h2>
             <p className="text-center">
               <Link to="/sign_in" className="text-success">
                 Have an account?

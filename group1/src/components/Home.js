@@ -5,13 +5,20 @@ import Feeds from './Feeds'
 import Tags from './Tags'
 import { useSelector } from 'react-redux'
 import NewPost from './NewPost'
+import { useNavigate } from 'react-router-dom'
 // import Tags from '.Tags'
 function Home() {
     const loginState = useSelector(state => state.login.value);
     const [api, setApi] = useState('https://api.realworld.io/api/articles?limit=10');
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const nav = useNavigate();
+    const handleShow = () => {
+        if (loginState === false) {
+            nav('/sign_in')
+        } else
+            setShow(true);
+    };
     const [change, setChange] = useState(true);
     useEffect(() => {
         setApi('https://api.realworld.io/api/articles?limit=10');
@@ -51,7 +58,7 @@ function Home() {
                             <img src={logo} alt='error' />
                         </div>
                         <div className={styles.createbutton} onClick={handleShow}>
-                            <span>Khai oi ban nghi gi the</span>
+                            <span>Create a new article</span>
                         </div>
                     </div>
                     <Feeds api={api} changes={change}></Feeds>

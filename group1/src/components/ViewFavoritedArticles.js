@@ -106,9 +106,9 @@ function ViewMyArticles() {
                 <img src={author.profile.image} alt="User Avatar" className={styles.avatar} />
                 <h3>{author.profile.username}</h3>
                 {
-                  author.profile.username !== userData.username && (<div className={'styles.flo'}>
-                    {follow === false && (<button onClick={handleFollow} >Follow</button>)}
-                    {follow === true && (<button onClick={handleUnfollow} >Unfollow</button>)}
+                  author.profile.username !== userData.username && (<div className={styles.flo}>
+                    {follow === false && (<button onClick={handleFollow} >+ Follow</button>)}
+                    {follow === true && (<button onClick={handleUnfollow} >- Unfollow</button>)}
                   </div>)
                 }
               </div>

@@ -3,32 +3,26 @@ import { Card, Col, Container, Form, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-
+import styles from '../assets/css/setting.module.css'
 const Setting = () => {
   const nav = useNavigate();
   const [user, setUser] = useState("");
-  const [token, setToken] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
-  const [bio, setBio] = useState("");
-  const [image, setImage] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userFromLocalStorage = JSON.parse(localStorage.getItem("user"));
-        if (userFromLocalStorage) {
-          setUser(userFromLocalStorage);
-        }
-
+        const token = localStorage.getItem('token');
         const response = await axios.get("https://api.realworld.io/api/user", {
-
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          }
         });
         const userData = response.data.user;
+        userData.password = null;
         setUser(userData);
         localStorage.setItem("user", JSON.stringify(userData));
-        console.log(userFromLocalStorage);
+        console.log(response);
       } catch (error) {
         console.log(error.message);
       }
@@ -39,22 +33,20 @@ const Setting = () => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    const empdata = { email, password, username, bio, image };
-
-    fetch("https://api.realworld.io/api/user", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(empdata),
-    })
-      .then(() => {
-        localStorage.setItem("user", JSON.stringify(user));
-        toast.success("Updated successfully!");
-        nav("/profile")
-      })
-      .catch((error) => {
-        console.log(error.message);
+    const token = localStorage.getItem('token');
+    try {
+      const response = await axios.put("https://api.realworld.io/api/user", { user }, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
       });
-    console.log(user);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      toast.success("Updated successfully!");
+      nav(`/my_articles/${user.username}`)
+    } catch (err) {
+      console.log(err.message);
+    }
   };
 
 
@@ -68,11 +60,12 @@ const Setting = () => {
     <Container>
       <Row>
         <Col md={12}>
-          <h2 className=" mt-5 text-center">Your Setting</h2>
+          <h2 className=" mt-5 text-center text-light">Your Setting</h2>
         </Col>
       </Row>
       <Row>
-        <Col md={12}>
+        <Col md={3}></Col>
+        <Col md={6}>
           <Form className="form-setting ng-valid ng-valid-email ng-dirty ng-valid-parse">
             <fieldset>
               <input
@@ -114,7 +107,7 @@ const Setting = () => {
               ></input>
             </fieldset>
             <button
-              class="btn btn-lg btn-success pull-xs-right"
+              class="btn btn-lg btn-primary pull-xs-right"
               type="submit"
               onClick={handleUpdate}
             >
