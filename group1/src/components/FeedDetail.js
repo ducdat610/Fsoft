@@ -3,14 +3,17 @@ import Button from 'react-bootstrap/Button';
 import React, { useState, useEffect } from 'react'
 import styles from '../assets/css/posts.module.css'
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux'
+
 
 
 function FeedDetail({ selectedFeed, showModal, setShowModal, handleLike }) {
 
     const [comments, setComments] = useState('');
     const [commentContent, setCommentContent] = useState('');
-
+    const loginState = useSelector(state => state.login.value);
+    const nav = useNavigate()
 
 
     const displayDate = (time) => {
@@ -36,7 +39,10 @@ function FeedDetail({ selectedFeed, showModal, setShowModal, handleLike }) {
     };
 
 
-
+const handleLikeIndex=()=>{
+    console.log(123412)
+        handleLike(selectedFeed.slug, selectedFeed.index, selectedFeed.favorited,1)
+}
 
     const addComment = async (slug, comment) => {
         try {
@@ -61,7 +67,6 @@ function FeedDetail({ selectedFeed, showModal, setShowModal, handleLike }) {
             console.error('Lỗi khi thêm comment:', error);
         }
     };
-
 
 
 
@@ -174,8 +179,8 @@ function FeedDetail({ selectedFeed, showModal, setShowModal, handleLike }) {
                         )}
                         <div className='container' style={{ marginTop: '20px' }}>
                             <div className='col-12' >
-                                <Button className='col-6' variant="outline-secondary" onClick={handleLike}>
-                                    <span><i className="fa fa-thumbs-o-up" aria-hidden="true"></i> Like</span>
+                                <Button className='col-6' variant="outline-secondary"  onClick={handleLikeIndex}>
+                                    <span className={selectedFeed !==null &&  selectedFeed.favorited ?'text-primary':''}><i className="fa fa-thumbs-o-up" aria-hidden="true" ></i> Like</span>
                                 </Button>
 
                                 <Button className='col-6' variant="outline-secondary" >
@@ -183,7 +188,13 @@ function FeedDetail({ selectedFeed, showModal, setShowModal, handleLike }) {
                                 </Button>
                                 <div className='card comment-form ng-pristine ng-valid' style={{ marginTop: '20px' }}  >
                                     <div className='card-block'>
-                                        <textarea
+                                        <textarea 
+                                        onFocus={()=>{
+                                            if(
+                                                loginState === false 
+                                            )
+                                            nav('/sign_in')
+                                        }}
 
                                             value={commentContent}
                                             onChange={(e) => setCommentContent(e.target.value)}
@@ -218,6 +229,11 @@ function FeedDetail({ selectedFeed, showModal, setShowModal, handleLike }) {
                                                                         width: '15%', marginLeft: '10px', borderRadius: '50%'
                                                                     }} alt='User avatar'></img>
                                                                 )}
+                                                                <div>
+                                                                  <span> {comment.author.username} </span><br></br>
+                                                                <span> {comment.updatedAt} </span>
+                                                                </div>
+                                                               
                                                             </div>
                                                             <div className='col-6'>
                                                                 <button style={{

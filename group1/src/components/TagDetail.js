@@ -11,20 +11,32 @@ function TagDetail() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    axios.get(`${api} / articles ? tag = ${tag}`, {
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      }
-    })
-      .then((response) => {
-        setPostCount(response.data.articlesCount);
-
-      }).catch((error) => {
-        console.log(error)
+    if(token ){
+      axios.get(`${api}/articles?tag=${tag}`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
       })
+        .then((response) => {
+          setPostCount(response.data.articlesCount);
+  
+        }).catch((error) => {
+          console.log(error)
+        })
+    }else{
+      axios.get(`${api}/articles?tag=${tag}`)
+        .then((response) => {
+          setPostCount(response.data.articlesCount);
+  
+        }).catch((error) => {
+          console.log(error)
+        })
+    }
+    
 
   }, [tag])
+  console.log(postCount)
   return (
     <>
       <div className={styles.tagIdea}>
@@ -47,6 +59,3 @@ function TagDetail() {
 }
 
 export default TagDetail;
-
-
-
