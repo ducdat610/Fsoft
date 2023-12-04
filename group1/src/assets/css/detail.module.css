@@ -1,3 +1,11 @@
+.tagIdea {
+    height: 140px;
+    background-color: #1c1c1d;
+    color: white;
+    padding-left: 10vw;
+    padding-top: 20px;
+   
+}
 .authors {
     width: 100%;
     margin: auto;
@@ -5,31 +13,17 @@
     background-color: #242526;
     margin-top: 20px;
     border-radius: 10px;
-    justify-content: space-between;
 }
 
-.infor{
-    display: flex;
-    height: 100%;
-}
-.actions{
-    display: flex;
-    height: 100%;
-}
-
-.actions button{
-    background-color: #242526;
-    border: none;
-    font-size: 20px;
-    color: white;
-}
 .posts {
     padding: 20px;
-    width: 80%;
+    width: 60%;
     margin: auto;
     background-color: #242526;
     margin-top: 20px;
     border-radius: 10px;
+    /* padding-left: 15vw; */
+    margin-left: 20vw;
 }
 
 .authorProfile {
@@ -43,12 +37,8 @@
 
 .name {
     font-weight: bold;
-    color: white;
-    text-decoration: none;
 }
-.link1 {
-    text-decoration: none;
-}
+
 .createdat {
     font-size: 12px;
 }
@@ -82,7 +72,6 @@
     color: white;
     display: flex;
     margin-top: 10px;
-    font-size: 20px;
 }
 
 .postbuttons div {
@@ -133,72 +122,77 @@
     cursor: pointer;
 }
 
-.authors{
-    height: 50px;
-}
-.avartarPost img{
-    height: 100%;
-}
-
-
-#loader {
-    margin-left: 45%;
-    margin-top: 30px;
-    z-index: 1;
-    width: 60px;
-    height: 60px;
-    border: 8px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 8px solid #3498db;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-}
-
-@-webkit-keyframes spin {
-    0% {
-        -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-        -webkit-transform: rotate(360deg);
-    }
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-.liked{
-    color: #3498db;
-}
-
-.tagGroup{
-    display: flex;
-}
-
-.tagItem{
-    background-color: gray;
-    box-sizing: border-box;
-    padding: 5px 10px 5px 10px;
-    margin-right: 10px;
+.feeds{
+    color: white;
+    /* margin-top: 20px; */
     border-radius: 5px;
+    height: 60px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+
+.feeds:hover{
+    background-color: rgb(147, 147, 147)
+}
+.feeds i{
+    font-size: 30px;
+    color: rgb(166, 200, 255);
+}
+
+.feeds p{
+    font-weight: bold;
+}
+
+.home1{
+    padding-left: 20px;
+    margin-top: 0px;
+}
+.home3 {
+    padding: 0px;
+}
+.home2 {
+    padding: 0px;
+}
+.tagIdea2 {
+    height: 120px;
+    background-color: #222222;
+    color: white;
+    padding-left: 5vw;
+    padding-top: 20px;
+}
+.viewtag {
+    height: 120px;
+    background: rgb(61, 60, 60);
+    /* margin-top: 10px; */
+    padding-top: 5px;
+    border-radius: 10px;
+}
+.avatar {
+    border-radius: 50%;
     margin-top: 10px;
+    height: 70px;
 }
-
-.tagItem p{
-    margin: 0;
+.viewtag {
+    text-align: center;
 }
-
-.tagItem span{
-    margin-left: 5px;
+.viewtag h3 {
+    color: white;
+    margin-top: 10px;
+    font-size: 16px;
 }
+.primary {
+    text-decoration: none;
+    color: white;
+}
+.flo {
+    margin-top: -2rem;
+    margin-left: 35vw;
+    /* background: #a6c8ff; */
+}
+.flo button {
+    background: #a6c8ff;
+    border: none;
+    border-radius: 5px;
 
-.tagItem i:hover{
-    cursor: pointer;
 }

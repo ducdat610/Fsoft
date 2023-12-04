@@ -12,7 +12,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { useSelector, useDispatch } from 'react-redux'
+import { login, logout } from '../features/login/loginSlice'
 const Sign_In = () => {
+  const loginState = useSelector(state => state.login.value)
+  const dispatch = useDispatch()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const nav = useNavigate();
@@ -37,9 +41,11 @@ const Sign_In = () => {
           localStorage.setItem("user", JSON.stringify(user));
           localStorage.setItem("token", user.token);
           toast.success("Success");
+          dispatch(login())
           nav("/");
         })
         .catch((err) => {
+          console.log(err);
           toast.error("Login Failed due to :" + err.message);
         });
     }
@@ -63,7 +69,7 @@ const Sign_In = () => {
           <div>
             <h2 className="text-center">Sign In</h2>
             <p className="text-center">
-              <Link to="/sign_up" className="text-success">
+              <Link to="/sign_up" className="text-primary">
                 Need an account?
               </Link>
             </p>
@@ -85,7 +91,7 @@ const Sign_In = () => {
                 />
               </FormGroup>
               <FormGroup>
-                <Button type="submit" className="btn btn-success">
+                <Button type="submit" className="btn btn-primary">
                   Sign In
                 </Button>
               </FormGroup>

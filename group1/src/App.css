@@ -25,3 +25,108 @@ body{
 .articles-toggle {
     margin: 22px 2px;
 }
+.modal-dialog{
+    /* width: 80% !important; */
+    width: 900px !important;
+    max-width: none !important ;
+}
+.modal-header, .modal-body{
+    background-color: #3a3d3f !important;
+    color: aliceblue    ;
+}
+
+.modal-footer{
+    background-color: #3a3d3f !important;
+    color: aliceblue    ;
+}
+
+body{
+    background-color: #18191a !important;
+}
+.active {
+    color:#0866ff !important;
+}
+
+.modal-dialog{
+    /* width: 80% !important; */
+    width: 900px !important;
+    max-width: none !important ;
+}
+.modal-header, .modal-body{
+    background-color: #3a3d3f !important;
+    color: aliceblue    ;
+}
+
+.modal-footer{
+    background-color: #3a3d3f !important;
+    color: aliceblue    ;
+}
+
+body{
+    background-color: #18191a !important;
+}
+.active {
+    color:#0866ff !important;
+}
+
+.contener {
+    background-color: #18191a !important;
+    height: 100vh;
+    margin-top: 20px;
+  }
+  .tags {
+    width: 240px;
+    height: auto;
+    /* background: gray; */
+    background-color: #242526;
+    color: white;
+    height:180px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px; 
+    padding-left: 10px;
+
+    padding-bottom: 10px;
+  }
+  
+  .Tag-bg {
+    /* background: gray; */
+    background-color: #242526;
+    margin: 0px 0px 5px 0px;
+    height: 200px;
+    width: 240px;
+  }
+  .Tag-bg h2 {
+    color: aliceblue;
+    width: 240px;
+    /* background: gray; */
+    background-color: #242526;
+    margin: 0;
+    margin-top: 20px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+  }
+  .tag {
+    cursor: pointer;
+    background: #333;
+    padding: 5px 5px;
+    border-radius: 5px;
+    white-space: nowrap; 
+  }
+  .header-content {
+    background: gray;
+    color: white;
+    height: 50px;
+    width: 240px;
+  }
+  #tag-name {
+    margin: 0px;
+    padding-top: 40px;
+    /* background: gray; */
+    background-color: #242526;
+    padding-left: 10px;
+  }
+  #link {
+    text-decoration: none;
+    color: white;
+  }

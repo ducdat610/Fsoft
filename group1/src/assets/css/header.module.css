@@ -31,3 +31,59 @@ header{
     text-decoration: none;
     margin-right: 10px;
 }
+
+.logged p{
+    color: gray;
+    margin: 0;
+}
+
+.logged img{
+    height: 70%;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.logged{
+    cursor: pointer;
+    position: relative;
+}
+
+
+.logged:hover .linkbox{
+    display: block;
+}
+.logged .linkbox{
+    position: absolute;
+    bottom: -60px;
+    background-color: #464646;
+}
+
+.linkbox{
+    color: white;
+    width: 160px;
+    display: none;
+}
+
+.linkbox ul li a{
+    color:white;
+}
+
+.linkbox ul{
+    list-style: none;
+    padding: 0;
+    height: 100%;
+    margin: 0;
+    height: 60px;
+}
+
+.linkbox li{
+    height: 50%;
+    padding-left: 20px;
+}
+.linkbox li:hover{
+    background-color: gray;
+}
+
+.header11 {
+    text-decoration: none;
+}
