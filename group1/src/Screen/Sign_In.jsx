@@ -46,7 +46,12 @@ const Sign_In = () => {
         })
         .catch((err) => {
           console.log(err);
-          toast.error("Login Failed due to :" + err.message);
+          if (err.response.data.errors['email or password']) {
+            toast.error("Login Failed due to : email or password " + err.response.data.errors['email or password']);
+          }
+          else {
+            toast.error("Login Failed due to :" + err.message);
+          }
         });
     }
   };
@@ -67,7 +72,7 @@ const Sign_In = () => {
       <Row>
         <Col md={{ span: 6, offset: 3 }}>
           <div>
-            <h2 className="text-center">Sign In</h2>
+            <h2 className="text-center text-light">Sign In</h2>
             <p className="text-center">
               <Link to="/sign_up" className="text-primary">
                 Need an account?

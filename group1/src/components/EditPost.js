@@ -10,7 +10,6 @@ function EditPost(props) {
     const [feed, setFeed] = useState();
     useEffect(() => {
         if (props.Article) {
-            console.log(props.Article);
             setFeed(props.Article);
         }
     }, [props.Article])
@@ -25,9 +24,8 @@ function EditPost(props) {
     const handleSubmit = async (values) => {
         let taglist = [];
         const token = localStorage.getItem('token');
-        console.log(values.tagList);
-        if (values.tagList !== undefined) {
-            taglist = values.taglist.split(',').map((tag) => {
+        if (values.tagList !== undefined && values.tagList !== '') {
+            taglist = values.tagList.split(',').map((tag) => {
                 return tag.trim();
             });
         }
@@ -36,9 +34,12 @@ function EditPost(props) {
             title: values.title,
             description: values.description,
             body: values.body,
-            tagList: taglist
+            // tagList: taglist
         }
-        console.log(article);
+        if (values.tagList !== undefined && values.tagList !== '') {
+            article.tagList = taglist;
+        }
+        else article.tagList = feed.tagList;
         try {
             await axios.put(`https://api.realworld.io/api/articles/${feed.slug}`, { article }, {
                 headers: {
@@ -46,7 +47,7 @@ function EditPost(props) {
                     "Authorization": `Bearer ${token}`
                 }
             })
-            nav("/");
+            props.handleClose();
         }
         catch (error) {
             console.log(error);
@@ -60,7 +61,6 @@ function EditPost(props) {
             return tagg !== tag;
         })
         newArr.tagList = newTag;
-        console.log(newArr);
         setFeed(newArr);
     }
     return (
@@ -71,9 +71,11 @@ function EditPost(props) {
                 </Modal.Header>
                 <Modal.Body>
                     <Formik
-                        initialValues={{ title: `${feed ? feed.title : ""}`, 
-                        description: `${feed ? feed.description : ""}`, 
-                        body: `${feed ? feed.body : ""}`, tagList: '' }}
+                        initialValues={{
+                            title: `${feed ? feed.title : ""}`,
+                            description: `${feed ? feed.description : ""}`,
+                            body: `${feed ? feed.body : ""}`, tagList: ""
+                        }}
                         onSubmit={(values) => handleSubmit(values)}
                         validationSchema={LoginValidate}
                     >
