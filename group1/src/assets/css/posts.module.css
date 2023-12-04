@@ -202,3 +202,6 @@
 .tagItem i:hover{
     cursor: pointer;
 }
+#text-author-detail{
+    place-self: center !important;
+}

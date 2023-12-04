@@ -283,6 +283,7 @@ function Feeds(props) {
                 selectedFeed={selectedFeed}
                 showModal={showModal}
                 setShowModal={setShowModal}
+                
             />
         </>
 
@@ -292,3 +293,6 @@ function Feeds(props) {
 
 
 export default Feeds
+
+
+
