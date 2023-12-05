@@ -125,14 +125,22 @@ function Feeds(props) {
     const openModal = async (slug, index) => {
         try {
             const token = localStorage.getItem('token');
-
-            const response = await axios.get(`https://api.realworld.io/api/articles/${slug}`,{
+            var response;
+            if(loginState){
+            response = await axios.get(`https://api.realworld.io/api/articles/${slug}`,{
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
                 }
             });
+            }else{
+                response = await axios.get(`https://api.realworld.io/api/articles/${slug}`)
+            }
+            
+
+            
             setSelectedFeed({...response.data.article,index:index});
+
             console.log(setSelectedFeed)
             setShowModal(true);
 
@@ -224,7 +232,7 @@ function Feeds(props) {
                                             <div className={styles.authorProfile}>
                                                 <Link  to={loginState? `/my_articles/${feed.author.username}`:'/'} className={styles.link1}> <p className={styles.name}>{feed.author.username}</p>
                                                 </Link>
-                                                <p className={styles.createdat}>{displayDate(feed.createdAt)}</p>
+                                                <p className={styles.createdat}>{displayDate(feed.createdAt, feed.updatedAt)}</p>
                                             </div>
                                         </div>
                                         {author !== "" && feed.author.username === author.username && (

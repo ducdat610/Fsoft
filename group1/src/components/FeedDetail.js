@@ -135,18 +135,18 @@ const handleLikeIndex=()=>{
                             <div className='container'>
                                 <div className='row' style={{ marginLeft: '5px' }}>
                                     <div className='col-4'>
-                                        <div className='row'>
+                                        <div className='row' style={{ alignItems: 'center' }}>
                                             <div className='col-3' style={{ paddingTop: '15px' }}>
-                                                <p >
-                                                    <img className='rounded-circle' style={{ width:'60px'}} src={selectedFeed.author.image} alt='error' />
+                                                <p>
+                                                    <img className='rounded-circle' style={{ width: '60px' }} src={selectedFeed.author.image} alt='error' />
                                                 </p>
-
                                             </div>
-                                            <div className='col-9' style={{ fontWeight: 'bold', }}>
+                                            <div className='col-9' style={{ fontWeight: 'bold' }}>
                                                 <span>{selectedFeed.author.username} </span>
-                                                <div> <span style={{ fontWeight: 'lighter', placeSelf:'center'}}> {displayDate(selectedFeed.createdAt)}</span></div>
+                                                <div> <span style={{ fontWeight: 'lighter' }}>{displayDate(selectedFeed.createdAt)}</span></div>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                                 <h3 style={{ marginBottom: '40px', marginTop: '20px', fontStyle: 'italic' }}>{selectedFeed.title}</h3>
@@ -217,7 +217,7 @@ const handleLikeIndex=()=>{
                                         {Array.isArray(comments) && comments.map((comment, index) => (
                                             <div className='' key={index} style={{ border: '1px grey solid', borderRadius: '10px', marginBottom: '10px', marginTop: '10px' }}>
 
-                                                <div className="card ">
+                                                <div className="card " >
                                                     <div className="card-body ">
                                                         <h6 className="card-text">{comment.body}</h6>
                                                     </div>

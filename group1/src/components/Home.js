@@ -25,7 +25,7 @@ function Home() {
         setChange(!change);
     }, [loginState])
     return (
-        <div className='container-fluid'>
+        <div className='container'>
             <div className='row'>
                 <div className={`col-3 ${styles.home1}`}>
                     <div className={`${styles.feeds} row`}
