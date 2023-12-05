@@ -14,7 +14,7 @@ import ViewMyArticles from './components/ViewMyArticles';
 import ViewMyFavoritedArticles from './components/ViewFavoritedArticles'
 function App() {
   return (
-    <div className="App">
+    <div className="App" t>
       <BrowserRouter>
         <Header />
         <Routes>

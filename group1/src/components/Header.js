@@ -32,7 +32,8 @@ function Header() {
     }
     console.log(user);
     return (
-        <header className={styles.header}>
+        <div className='container-fluid'>
+<header className={styles.header}>
             <NavLink to={`/`} className={styles.header11}>
                 <div className={styles.header1}>
                     <img src={logo} alt='error' />
@@ -76,6 +77,8 @@ function Header() {
             }
 
         </header>
+        </div>
+        
     )
 }
 
