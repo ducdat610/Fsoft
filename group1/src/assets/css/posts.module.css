@@ -205,3 +205,20 @@
 #text-author-detail{
     place-self: center !important;
 }
+
+@media (max-width: 768px) {
+    .modal-dialog {
+      max-width: 60%; 
+    }
+  }
+  
+  @media (min-width: 769px) {
+    .modal-dialog {
+      max-width: 60%; 
+    }
+  }
+  
+  .modal-content {
+    /* Add your custom styles for modal content */
+  }
+  

@@ -75,7 +75,7 @@ function ViewMyArticles() {
   }
   console.log(follow);
   return (
-    <>
+    <div className='container'>
       <div className='row'>
         <div className={`col-3 ${styles.home1}`}>
           <div className={`${styles.feeds} row`}>
@@ -120,7 +120,7 @@ function ViewMyArticles() {
         </div>
       </div>
 
-    </>
+    </div>
   );
 }
 

@@ -31,7 +31,7 @@ function Tag() {
 
   return (
     <div className='container'>
-      <div className='Tag-bg'>
+      <div className='Tag-bg d-none d-md-block'>
         <h2>Popular Tags:</h2>
         <div className='tags'>
           {tags.map(tag => (

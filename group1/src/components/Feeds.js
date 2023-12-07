@@ -225,14 +225,14 @@ function Feeds(props) {
                                 <div className={styles.posts} key={index}>
                                     <div className={styles.authors}>
                                         <div className={styles.infor}>
-                                            <div className={styles.avartarPost}>
+                                            <div className={styles.avartarPost} >
                                                 <img src={feed.author.image
-                                                } alt='error' />
+                                                }  alt='error' />
                                             </div>
                                             <div className={styles.authorProfile}>
                                                 <Link  to={loginState? `/my_articles/${feed.author.username}`:'/'} className={styles.link1}> <p className={styles.name}>{feed.author.username}</p>
                                                 </Link>
-                                                <p className={styles.createdat}>{displayDate(feed.createdAt, feed.updatedAt)}</p>
+                                                <p className={styles.createdat}>{displayDate(feed.createdAt)}</p>
                                             </div>
                                         </div>
                                         {author !== "" && feed.author.username === author.username && (
@@ -264,7 +264,7 @@ function Feeds(props) {
 
                                         <p className={styles.title}>{feed.title}</p>
                                         <p className={styles.description}>{feed.description}</p>
-                                        <p onClick={() => openModal(feed.slug,index)} className={styles.readmore}>Readmore...</p>
+                                        <p onClick={() => openModal(feed.slug,index)} className={styles.readmore}>Read more...</p>
 
                                     </div>
                                     <div className={styles.followed}>

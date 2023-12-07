@@ -107,7 +107,7 @@ const Setting = () => {
               ></input>
             </fieldset>
             <button
-              class="btn btn-lg btn-primary pull-xs-right"
+              className="btn btn-lg btn-primary pull-xs-right"
               type="submit"
               onClick={handleUpdate}
             >
