@@ -8,12 +8,13 @@ import { useSelector } from 'react-redux'
 
 
 
-function FeedDetail({ selectedFeed, showModal, setShowModal, handleLike }) {
+function FeedDetail({ selectedFeed, showModal, setShowModal, handleLike ,index}) {
 
     const [comments, setComments] = useState('');
     const [commentContent, setCommentContent] = useState('');
     const loginState = useSelector(state => state.login.value);
     const nav = useNavigate()
+    const [readMoreStates, setReadMoreStates] = useState([]);
 
 
     const displayDate = (time) => {
@@ -34,13 +35,12 @@ function FeedDetail({ selectedFeed, showModal, setShowModal, handleLike }) {
             );
             setComments(response.data.comments);
         } catch (error) {
-            console.error('Lỗi khi lấy dữ liệu comment:', error);
+            console.error( error);
         }
     };
 
 
 const handleLikeIndex=()=>{
-    console.log(123412)
         handleLike(selectedFeed.slug, selectedFeed.index, selectedFeed.favorited,1)
 }
 
@@ -58,13 +58,13 @@ const handleLikeIndex=()=>{
                 }
             );
 
-            setComments(prevComments => [
-                ...prevComments,
-                { body: comment }
-            ]);
+            // setComments(prevComments => [
+            //     ...prevComments,
+            //     { body: comment }
+            // ]);
             setCommentContent('');
         } catch (error) {
-            console.error('Lỗi khi thêm comment:', error);
+            console.error( error);
         }
     };
 
@@ -79,7 +79,7 @@ const handleLikeIndex=()=>{
                 setCommentContent('');
             }
         } catch (error) {
-            console.error('Lỗi khi gửi bình luận:', error);
+            console.error( error);
         }
     };
 
@@ -92,9 +92,23 @@ const handleLikeIndex=()=>{
         }
     }, [showModal, selectedFeed]);
 
+    useEffect(() => {
+        setReadMoreStates((prev) => [...prev, false]);
+      
+        return () => {
+          setReadMoreStates((prev) => prev.slice(0, prev.length - 1));
+        };
+      }, []);
+      
 
-
-
+      const handleReadMore = () => {
+        setReadMoreStates((prev) => {
+          const newState = [...prev];
+          newState[selectedFeed.slug] = !newState[selectedFeed.slug];
+          return newState;
+        });
+      };
+      
     const handleDeleteComment = async (commentId) => {
         try {
             const token = localStorage.getItem('token');
@@ -106,7 +120,7 @@ const handleLikeIndex=()=>{
             });
             setComments(prevComments => prevComments.filter(comment => comment.id !== commentId));
         } catch (error) {
-            console.error('Error del', error);
+            console.error( error);
         }
     };
 
@@ -114,11 +128,12 @@ const handleLikeIndex=()=>{
 
 
     return (
-        <>
-            <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <div className='modal-dialog'>
+            <Modal show={showModal} onHide={() => setShowModal(false)} >
+                
                 <Modal.Header closeButton>
                     <Modal.Title className='container' >
-                        <div >
+                        <div className='row mb-3'>
                             <div className='col-12'>
                                 <div >
                                     <h3 style={{ textAlign: 'center' }}> {selectedFeed && selectedFeed.author.username}'s Article</h3>
@@ -133,39 +148,52 @@ const handleLikeIndex=()=>{
                     <>
                         {selectedFeed && (
                             <div className='container'>
-                                <div className='row' style={{ marginLeft: '5px' }}>
-                                    <div className='col-4'>
-                                        <div className='row' style={{ alignItems: 'center' }}>
-                                            <div className='col-3' style={{ paddingTop: '15px' }}>
+                                        <div className='row' style={{ textAlign: 'center' }}>
+                                            <div className='' style={{ paddingTop: '15px' }}>
                                                 <p>
                                                     <img className='rounded-circle' style={{ width: '60px' }} src={selectedFeed.author.image} alt='error' />
                                                 </p>
                                             </div>
-                                            <div className='col-9' style={{ fontWeight: 'bold' }}>
+                                            <div className='' style={{ fontWeight: 'bold' }}>
                                                 <span>{selectedFeed.author.username} </span>
                                                 <div> <span style={{ fontWeight: 'lighter' }}>{displayDate(selectedFeed.createdAt)}</span></div>
                                             </div>
                                         </div>
 
-                                    </div>
-                                </div>
                                 <h3 style={{ marginBottom: '40px', marginTop: '20px', fontStyle: 'italic' }}>{selectedFeed.title}</h3>
-                                <div className='border border-secondary ' style={{ borderRadius: '5px', marginBottom: '10px', padding: '10px 10px 1px 9px' }}>
+                                {/* <div className='border border-secondary ' style={{ borderRadius: '5px', marginBottom: '10px', padding: '10px 10px 1px 9px' }}>
                                     <p >{selectedFeed.body}</p>
 
+                                </div> */}
+                                <div className='border border-secondary ' style={{ borderRadius: '5px', marginBottom: '10px', padding: '10px 10px 1px 9px' }}>
+                                    {readMoreStates[selectedFeed.slug] ? (
+                                        <p>{selectedFeed.body}</p>
+                                    ) : (
+                                        <p>
+                                            {selectedFeed.body.length > 450
+                                                ? selectedFeed.body.substring(0, 450) + '... '
+                                                : selectedFeed.body}
+                                            {selectedFeed.body.length > 450 && (
+                                                <span onClick={handleReadMore} style={{ cursor: 'pointer', fontWeight:'bold', fontStyle:'italic' }}>
+                                                    Read more...
+                                                </span>
+                                            )}
+                                        </p>
+                                    )}
                                 </div>
+
                                 <div >
                                     {
                                         selectedFeed.tagList.length !== 0 && (
-                                            <p>
+                                            <span>
                                                 {
                                                     selectedFeed.tagList.map((tag, index) => {
                                                         return (
-                                                            <span style={{ marginLeft: "7px" }} key={index}><Link>#{tag}</Link></span>
+                                                            <span style={{ marginLeft: "7px", display:'inline-grid' }} key={index}><Link>#{tag}</Link></span>
                                                         )
                                                     })
                                                 }
-                                            </p>
+                                            </span>
                                         )
                                     }
 
@@ -179,14 +207,17 @@ const handleLikeIndex=()=>{
                         )}
                         <div className='container' style={{ marginTop: '20px' }}>
                             <div className='col-12' >
-                                <Button className='col-6' variant="outline-secondary"  onClick={handleLikeIndex}>
+                            <div className='row'>
+                             <Button className='col-6' variant="outline-secondary"  onClick={handleLikeIndex}>
                                     <span className={selectedFeed !==null &&  selectedFeed.favorited ?'text-primary':''}><i className="fa fa-thumbs-o-up" aria-hidden="true" ></i> Like</span>
                                 </Button>
 
                                 <Button className='col-6' variant="outline-secondary" >
                                     <span><i className="fa fa-comment-o" aria-hidden="true"></i> Comment</span>
                                 </Button>
-                                <div className='card comment-form ng-pristine ng-valid' style={{ marginTop: '20px' }}  >
+                                </div>
+                               
+                                <div className='card mb-3 comment-form ng-pristine ng-valid' style={{ marginTop: '20px' }}  >
                                     <div className='card-block'>
                                         <textarea 
                                         onFocus={()=>{
@@ -226,12 +257,12 @@ const handleLikeIndex=()=>{
                                                             <div className='col-6'>
                                                                 {comment.author && comment.author.image && (
                                                                     <img src={`${comment.author.image}`} style={{
-                                                                        width: '15%', marginLeft: '10px', borderRadius: '50%'
+                                                                        maxWidth: '50px',  borderRadius: '50%'
                                                                     }} alt='User avatar'></img>
                                                                 )}
-                                                                <div>
+                                                                <div style={{fontamily: 'cursive',fontStyle: 'italic'}}>
                                                                   <span> {comment.author.username} </span><br></br>
-                                                                <span> {comment.updatedAt} </span>
+                                                                <span> {displayDate(comment.createdAt)} </span>
                                                                 </div>
                                                                
                                                             </div>
@@ -259,13 +290,9 @@ const handleLikeIndex=()=>{
                         </div>
                     </>
                 </Modal.Body>
-                {/* <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowModal(false)}>
-                        Close
-                    </Button>
-                </Modal.Footer> */}
+               
             </Modal>
-        </>
+        </div>
 
 
 
