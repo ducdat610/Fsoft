@@ -130,3 +130,17 @@ body{
     text-decoration: none;
     color: white;
   }
+
+  .modal-dialog {
+   max-width:60vw !important;
+   margin: auto !important   ;
+   
+  
+ }
+ :root .modal{
+    --bs-modal-padding: 0 !important; 
+  }
+
+
+
+ 

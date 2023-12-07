@@ -222,7 +222,7 @@ function Feeds(props) {
                     {
                         feeds.length !== 0 && feeds.map((feed, index) => {
                             return (
-                                <div className={styles.posts} key={index}>
+                                <div className={styles.posts} key={index} index={index}>
                                     <div className={styles.authors}>
                                         <div className={styles.infor}>
                                             <div className={styles.avartarPost}>
@@ -264,7 +264,7 @@ function Feeds(props) {
 
                                         <p className={styles.title}>{feed.title}</p>
                                         <p className={styles.description}>{feed.description}</p>
-                                        <p onClick={() => openModal(feed.slug,index)} className={styles.readmore}>Readmore...</p>
+                                        <p onClick={() => openModal(feed.slug,index)} className={styles.readmore}>Read more...</p>
 
                                     </div>
                                     <div className={styles.followed}>
