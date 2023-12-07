@@ -310,7 +310,7 @@ function Feeds(props) {
                     )
                 }
             </div>
-            {loading !== 1 && feeds.length===0 && <p style={{color:"white"}}>No articles are here... yet.</p>}
+            {loading !== 1 && feeds.length===0 && <p style={{color:"white", marginLeft:"30px"}}>No articles are here... yet.</p>}
             <EditPost show={show} handleClose={handleClose} Article={editArticle}></EditPost>
             <FeedDetail
                 selectedFeed={selectedFeed}

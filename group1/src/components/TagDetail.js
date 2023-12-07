@@ -46,7 +46,7 @@ function TagDetail() {
       <div className='container'>
         <div className='row'>
           <div className='col-2'></div>
-          <div className='col-8'>
+          <div className='col-xl-8 col-lg-12'>
             <Feeds api={`${api}/articles?tag=${tag}`}></Feeds>
           </div>
           <div className='col-2'></div>

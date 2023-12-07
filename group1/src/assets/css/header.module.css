@@ -1,22 +1,24 @@
-header{
+header {
     background-color: #242526;
     height: 60px;
     display: flex;
     justify-content: space-between;
     padding: 0px 30px 0px 30px;
+    border-bottom: 0.1px rgb(120, 120, 120) solid;
 }
 
-.header1{
+.header1 {
     height: 100%;
     display: flex;
     align-items: center;
 }
 
-.header1 img{
+.header1 img {
     height: 60%;
     margin-right: 10px;
 }
-.header1 h2{
+
+.header1 h2 {
     color: #0866ff;
     font-weight: bold;
 }
@@ -26,49 +28,47 @@ header{
     align-items: center;
 }
 
-.header2 a{
+.header2 a {
     color: gray;
     text-decoration: none;
     margin-right: 10px;
 }
 
-.logged p{
+.header2 p {
     color: gray;
     margin: 0;
 }
 
-.logged img{
+.logged img {
     height: 70%;
     border-radius: 50%;
     margin-right: 10px;
 }
 
-.logged{
+.logged {
     cursor: pointer;
     position: relative;
 }
 
 
-.logged:hover .linkbox{
-    display: block;
-}
-.logged .linkbox{
+
+.logged .linkbox {
     position: absolute;
     bottom: -90px;
     background-color: #464646;
 }
 
-.linkbox{
+.linkbox {
     color: white;
     width: 160px;
     display: none;
 }
 
-.linkbox ul li a{
-    color:white;
+.linkbox ul li a {
+    color: white;
 }
 
-.linkbox ul{
+.linkbox ul {
     list-style: none;
     padding: 0;
     height: 100%;
@@ -76,14 +76,94 @@ header{
     height: 90px;
 }
 
-.linkbox li{
+.linkbox li {
     height: 33%;
     padding-left: 20px;
 }
-.linkbox li:hover{
+
+.linkbox li:hover {
     background-color: gray;
 }
 
 .header11 {
     text-decoration: none;
+}
+
+.linkboxmobile {
+    display: none;
+}
+
+.logged .linkboxmobile {
+    position: absolute;
+    top: 60px;
+    background-color: #242526;
+    right: -10px;
+    width: 350px;
+    padding: 30px 20px 0 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+
+.user-info {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding-bottom: 5px;
+    border-bottom: 0.1px solid rgb(122, 122, 122);
+    color: white;
+    margin-bottom: 10px;
+}
+
+.header2 .user-info p {
+    color: white;
+    margin: 0;
+}
+
+.linkboxmobile a {
+    color: white;
+    display: flex;
+}
+
+.linkboxmobile ul {
+    list-style: none;
+    padding: 0;
+}
+
+.linkboxmobile li {
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.user-info img {
+    height: 100%;
+}
+
+.icons {
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    background-color: #3a3b3c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.linkboxmobile span {
+    line-height: 35px;
+    margin-left: 20px;
+}
+
+.icons i {
+    font-size: 25px;
+    font-weight: 100;
+}
+
+@media screen and (min-width: 1225px) {
+    .logged:hover .linkbox {
+        display: block;
+    }
 }

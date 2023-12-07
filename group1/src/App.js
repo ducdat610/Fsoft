@@ -19,6 +19,7 @@ function App() {
         <Header />
         <Routes>
           <Route path='/' element={<Home/>}></Route>
+          <Route path='/:page' element={<Home/>}></Route>
           <Route path='/sign_in' element={<Sign_In/>}></Route>
           <Route path='sign_up' element={<Sign_Up/>}></Route>
           <Route path='setting' element={<Setting/>}></Route>

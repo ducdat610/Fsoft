@@ -205,3 +205,10 @@
 #text-author-detail{
     place-self: center !important;
 }
+
+@media screen and (max-width: 500px) {
+    .posts {
+        width: 100%;
+
+    }
+}

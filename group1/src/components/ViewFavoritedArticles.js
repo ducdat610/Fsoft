@@ -4,7 +4,7 @@ import axios from 'axios';
 import styles from '../assets/css/detail.module.css';
 import Feeds from './Feeds';
 import { Link } from 'react-router-dom';
-
+import { useMediaQuery } from 'react-responsive'
 function ViewMyArticles() {
   const [author, setAuthor] = useState(null);
 
@@ -73,11 +73,13 @@ function ViewMyArticles() {
       console.log(error);
     }
   }
-  console.log(follow);
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-width: 1224px)'
+  })
   return (
     <>
       <div className='row'>
-        <div className={`col-3 ${styles.home1}`}>
+        {isDesktopOrLaptop && (<div className={`col-xl-3 ${styles.home1}`}>
           <div className={`${styles.feeds} row`}>
             <div className='col-2'>
               <i className="fa fa-globe" aria-hidden="true"></i>
@@ -93,18 +95,21 @@ function ViewMyArticles() {
               <i className="fa fa-user-circle" aria-hidden="true"></i>
             </div>
             <div className='col-10'>
-              {author && (<Link to={`/favorited_articles/${author.profile.username}`} className={styles.primary}>
+              {author && (<Link to={`/favorited_articles/${author.profile.username}`}>
                 Favorited Articles
               </Link>)}
             </div>
           </div>
-        </div>
-        <div className={`col-6 ${styles.home2}`}>
+        </div>)}
+        <div className={`col-xl-6 col-lg-12 ${styles.home2}`}>
           <div className={styles.viewtag}>
             {author && (
               <div className={styles.userInfo}>
                 <img src={author.profile.image} alt="User Avatar" className={styles.avatar} />
                 <h3>{author.profile.username}</h3>
+                {!isDesktopOrLaptop && (<Link to={`/my_articles/${author.profile.username}`}>
+                  {author.profile.username} Articles
+                </Link>)}
                 {
                   author.profile.username !== userData.username && (<div className={styles.flo}>
                     {follow === false && (<button onClick={handleFollow} >+ Follow</button>)}
@@ -116,8 +121,8 @@ function ViewMyArticles() {
           </div>
           {author && <Feeds api={`https://api.realworld.io/api/articles?favorited=${author.profile.username}&?limit=10`}></Feeds>}
         </div>
-        <div className={`col-3 ${styles.home3}`}>
-        </div>
+        {isDesktopOrLaptop && (<div className={`col-xl-3 ${styles.home3}`}>
+        </div>)}
       </div>
 
     </>
