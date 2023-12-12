@@ -3,10 +3,17 @@ import { Card, Col, Container, Form, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useSelector, useDispatch } from 'react-redux'
+import { isChange } from '../features/login/navSlice'
+
 import styles from '../assets/css/setting.module.css'
 const Setting = () => {
   const nav = useNavigate();
   const [user, setUser] = useState("");
+  const loginState = useSelector(state => state.login.value);
+  const navChange = useSelector((state) => state.nav.value)
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,8 +29,11 @@ const Setting = () => {
         userData.password = null;
         setUser(userData);
         localStorage.setItem("user", JSON.stringify(userData));
+        localStorage.setItem("token", userData.token);
         console.log(response);
+        
       } catch (error) {
+        console.log(error)
         console.log(error.message);
       }
     };
@@ -42,6 +52,8 @@ const Setting = () => {
         }
       });
       localStorage.setItem("user", JSON.stringify(response.data.user));
+      localStorage.setItem('token', response.data.user.token)
+      dispatch(isChange(!navChange));
       toast.success("Updated successfully!");
       nav(`/my_articles/${user.username}`)
     } catch (err) {

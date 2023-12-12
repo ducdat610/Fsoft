@@ -131,11 +131,16 @@ body{
     color: white;
   }
 
-  .modal-dialog {
-   max-width:60vw !important;
+  .modal-dialog  {
+   max-width:90vw !important;
    margin: auto !important   ;
    
   
+   .modal-body {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+
+   }
  }
  :root .modal{
     --bs-modal-padding: 0 !important; 
