@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import styles from '../assets/css/posts.module.css'
 import FeedDetail from './FeedDetail';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import EditPost from './EditPost'
 import { useSelector } from 'react-redux'
 
@@ -18,7 +18,7 @@ function Feeds(props) {
     const [change, setChange] = useState(true);
     const [loading, setLoading] = useState(1);
     const [author, setAuthor] = useState({ username: "", image: "" });
-
+    const  nav = useNavigate();
     const [show, setShow] = useState(false);
     const handleClose = () => {
         setShow(false);
@@ -194,6 +194,7 @@ function Feeds(props) {
             }
 
         } catch (error) {
+            nav('/sign_in');
             console.log(error);
         }
     }

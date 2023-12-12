@@ -128,12 +128,12 @@ const handleLikeIndex=()=>{
 
 
     return (
-        <div className='modal-dialog'>
+        <div className='modal-dialog' id='comment'>
             <Modal show={showModal} onHide={() => setShowModal(false)} >
                 
                 <Modal.Header closeButton>
                     <Modal.Title className='container' >
-                        <div className='row mb-3'>
+                        <div className='row '>
                             <div className='col-12'>
                                 <div >
                                     <h3 style={{ textAlign: 'center' }}> {selectedFeed && selectedFeed.author.username}'s Article</h3>

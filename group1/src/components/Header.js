@@ -49,6 +49,28 @@ function Header() {
         if (userls) {
             let userObj = JSON.parse(userls);
             setUser(userObj);
+            dispatch(login());
+        }
+        const fetchData = async () => {
+            try {
+                const response = await axios.get("https://api.realworld.io/api/tags");
+                if (response.status === 200) {
+                    setTags(response.data.tags);
+                } else {
+                    throw new Error('Failed to fetch data');
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, [navChange])
+    useEffect(() => {
+        const userls = localStorage.getItem('user');
+        if (userls) {
+            let userObj = JSON.parse(userls);
+            setUser(userObj);
         }
     }, [loginState])
     const handleLogOut = () => {

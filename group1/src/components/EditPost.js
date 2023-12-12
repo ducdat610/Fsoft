@@ -24,6 +24,7 @@ function EditPost(props) {
     const handleSubmit = async (values) => {
         let taglist = [];
         const token = localStorage.getItem('token');
+        console.log(values.tagList)
         if (values.tagList !== undefined && values.tagList !== '') {
             taglist = values.tagList.split(',').map((tag) => {
                 return tag.trim();
@@ -40,6 +41,7 @@ function EditPost(props) {
             article.tagList = taglist;
         }
         else article.tagList = feed.tagList;
+        console.log(article)
         try {
             await axios.put(`https://api.realworld.io/api/articles/${feed.slug}`, { article }, {
                 headers: {
@@ -100,7 +102,7 @@ function EditPost(props) {
                                     <ErrorMessage component="div" name="body" className="text-danger" />
                                 </div>
                                 <div className='form-group' style={{ marginTop: "10px" }}>
-                                    <Field name='taglist' className={`form-control`}
+                                    <Field name='tagList' className={`form-control`}
                                         placeholder='Tags' />
                                 </div>
                                 <div className={styles.tagGroup}>
